@@ -15,12 +15,17 @@ export default function ProjectDetail() {
   const [otherLabel, setOtherLabel] = useState("Travel");
   const [otherAmt, setOtherAmt] = useState(2000);
   const [isStaff, setIsStaff] = useState(false);
+  const [editName, setEditName] = useState("");
+  const [editSurveyDate, setEditSurveyDate] = useState("");
+  const [editStatusMsg, setEditStatusMsg] = useState("");
+  const [savingMeta, setSavingMeta] = useState(false);
   const [appt, setAppt] = useState({ date:"", time:"09:00 AM", siteLocation:"", contactPerson:"", contactPhone:"" });
 
   const load = useCallback(()=> {
     fetch(`/api/projects/${id}`).then(r=>r.json()).then(j=> setP(j.project));
   },[id]);
   useEffect(()=>{ load(); fetch("/api/staff/me").then(r=>r.json()).then(j=> setIsStaff(!!j.staff)).catch(()=>{}); },[load]);
+  useEffect(()=>{ if(p){ setEditName(p.guestName ?? ""); setEditSurveyDate(p.surveyDate ? new Date(p.surveyDate).toISOString().slice(0,10) : ""); setEditStatusMsg(p.statusMessage ?? ""); } },[p]);
 
   async function transition(to: string, extra: any = {}) {
     const r = await fetch(`/api/projects/${id}/transition`, { method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify({ to, ...extra })});
@@ -50,6 +55,19 @@ export default function ProjectDetail() {
     e.preventDefault();
     const r= await fetch(`/api/projects/${id}/appointments`, { method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify(appt)});
     const j=await r.json(); if(!r.ok) setMsg(j.error ?? JSON.stringify(j)); else { setMsg(j.appointment.status==="CONFIRMED" ? "Appointment confirmed" : "Appointment requested — staff will confirm"); load(); }
+  }
+
+  async function saveMeta(){
+    setSavingMeta(true);
+    const payload:any = {};
+    payload.guestName = editName || null;
+    payload.surveyDate = editSurveyDate || null;
+    payload.statusMessage = editStatusMsg || null;
+    const r = await fetch(`/api/projects/${id}`, { method:"PATCH", headers:{ "Content-Type":"application/json" }, body: JSON.stringify(payload)});
+    const j = await r.json();
+    setSavingMeta(false);
+    if(!r.ok) setMsg(j.error ?? JSON.stringify(j));
+    else { setMsg("Public track info updated - client will see new status instantly on /track"); load(); }
   }
 
   if(!p) return <div className="max-w-5xl mx-auto px-4 py-10"><div className="h-6 w-40 bg-zinc-200 rounded animate-pulse"/><div className="h-32 bg-zinc-100 rounded-2xl mt-4 animate-pulse"/></div>;
@@ -121,7 +139,29 @@ export default function ProjectDetail() {
       {/* content */}
       <div className="mt-4">
         {tab==="overview" && (
-          <div className="grid lg:grid-cols-3 gap-4">
+          <div className="space-y-4">
+            {isStaff && (
+              <div className="bg-amber-50 border border-amber-200 rounded-[20px] p-5">
+                <div className="flex gap-2 items-center">
+                  <span className="h-7 w-7 rounded-full bg-amber-500 text-white grid place-items-center text-xs font-bold">!</span>
+                  <div className="font-semibold text-sm text-amber-900">Staff - Public Track Editor (no login needed for client)</div>
+                  <span className="ml-auto text-xs bg-white border border-amber-200 px-2 py-1 rounded-full text-amber-800">{p.statusMessage ? "Live" : "No message yet"}</span>
+                </div>
+                <div className="text-xs text-amber-800 mt-1">Kini ang makita ni client pag mag-type siya og Lot Number sa /track. Ikaw ray mag-handle. Example: "Kulang ang papel ug tax declaration" or "Submit na sa DENR".</div>
+                <div className="mt-4 grid md:grid-cols-3 gap-3">
+                  <label className="space-y-1"><div className="text-xs font-medium text-zinc-700">Client Name (e.g., Khent Felary Sanco)</div><input value={editName} onChange={e=>setEditName(e.target.value)} placeholder="Khent Felary Sanco" className="w-full rounded-xl border border-amber-200 bg-white px-3 py-2.5 text-sm" /></label>
+                  <label className="space-y-1"><div className="text-xs font-medium text-zinc-700">Survey Date</div><input type="date" value={editSurveyDate} onChange={e=>setEditSurveyDate(e.target.value)} className="w-full rounded-xl border border-amber-200 bg-white px-3 py-2.5 text-sm" /></label>
+                  <label className="space-y-1 md:col-span-1"><div className="text-xs font-medium text-zinc-700">Status - free text (visible to client)</div><input value={editStatusMsg} onChange={e=>setEditStatusMsg(e.target.value)} placeholder="Kulang tax declaration / Submit na sa DENR" className="w-full rounded-xl border border-amber-200 bg-white px-3 py-2.5 text-sm" /></label>
+                </div>
+                <div className="mt-3 flex gap-2">
+                  <button onClick={saveMeta} disabled={savingMeta} className="bg-amber-600 hover:bg-amber-700 text-white px-5 py-2.5 rounded-full text-sm font-semibold disabled:opacity-50">{savingMeta ? "Saving..." : "Save - update public track"}</button>
+                  <button onClick={()=>{ setEditStatusMsg("Kulang ang papel ug tax declaration - palihog provide Tax Dec"); }} className="px-4 py-2.5 rounded-full border bg-white text-xs">Preset: kulang tax</button>
+                  <button onClick={()=>{ setEditStatusMsg("Submit na sa DENR - waiting for approval"); }} className="px-4 py-2.5 rounded-full border bg-white text-xs">Preset: DENR</button>
+                </div>
+                <div className="text-xs text-zinc-600 mt-2">Preview sa client: <b>{editStatusMsg || "- no message -"}</b> - makita dayon sa <a href={`/track?q=${encodeURIComponent(p.property?.lotNo ?? "")}`} className="underline text-amber-700">/track?q={p.property?.lotNo}</a></div>
+              </div>
+            )}
+            <div className="grid lg:grid-cols-3 gap-4">
             <div className="lg:col-span-2 space-y-4">
               <div className="bg-white rounded-[20px] border border-zinc-200 card p-5">
                 <div className="text-sm font-semibold">Request details</div>
@@ -152,6 +192,7 @@ export default function ProjectDetail() {
                 <a href="/contact" className="mt-3 inline-flex bg-white text-emerald-800 px-4 py-2 rounded-full text-sm font-semibold">Contact</a>
               </div>
             </div>
+          </div>
           </div>
         )}
 

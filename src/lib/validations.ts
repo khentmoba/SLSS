@@ -1,4 +1,4 @@
-﻿import { z } from "zod";
+import { z } from "zod";
 import { SurveyType } from "@/generated/prisma/client";
 
 export const surveyTypeEnum = z.nativeEnum(SurveyType);
@@ -24,6 +24,8 @@ export const createProjectSchema = z.object({
   surveyType: surveyTypeEnum,
   purpose: z.string().min(5),
   preferredSchedule: z.string().optional(),
+  surveyDate: z.string().optional(), // ISO date from staff input (e.g., 2026-08-02)
+  statusMessage: z.string().max(500).optional(), // staff free-text status visible to client
 });
 
 export const otpSendSchema = z.object({ phone: z.string().regex(/^09\d{9}$/) });
@@ -45,3 +47,13 @@ export const appointmentSchema = z.object({
   contactPhone: z.string().regex(/^09\d{9}$/).optional(),
 });
 
+export const publicTrackQuerySchema = z.object({
+  q: z.string().min(1).max(100),
+});
+
+export const updateProjectMetaSchema = z.object({
+  guestName: z.string().min(2).max(100).optional(),
+  surveyDate: z.string().optional().nullable(),
+  statusMessage: z.string().max(500).optional().nullable(),
+  purpose: z.string().min(5).optional(),
+});

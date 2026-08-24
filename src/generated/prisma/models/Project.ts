@@ -28,11 +28,14 @@ export type ProjectMinAggregateOutputType = {
   id: string | null
   clientId: string | null
   guestPhone: string | null
+  guestName: string | null
   propertyId: string | null
   surveyType: $Enums.SurveyType | null
   purpose: string | null
   preferredSchedule: string | null
+  surveyDate: Date | null
   status: $Enums.ProjectStatus | null
+  statusMessage: string | null
   previousStatus: $Enums.ProjectStatus | null
   onHoldReason: string | null
   cancelReason: string | null
@@ -46,11 +49,14 @@ export type ProjectMaxAggregateOutputType = {
   id: string | null
   clientId: string | null
   guestPhone: string | null
+  guestName: string | null
   propertyId: string | null
   surveyType: $Enums.SurveyType | null
   purpose: string | null
   preferredSchedule: string | null
+  surveyDate: Date | null
   status: $Enums.ProjectStatus | null
+  statusMessage: string | null
   previousStatus: $Enums.ProjectStatus | null
   onHoldReason: string | null
   cancelReason: string | null
@@ -64,11 +70,14 @@ export type ProjectCountAggregateOutputType = {
   id: number
   clientId: number
   guestPhone: number
+  guestName: number
   propertyId: number
   surveyType: number
   purpose: number
   preferredSchedule: number
+  surveyDate: number
   status: number
+  statusMessage: number
   previousStatus: number
   onHoldReason: number
   cancelReason: number
@@ -84,11 +93,14 @@ export type ProjectMinAggregateInputType = {
   id?: true
   clientId?: true
   guestPhone?: true
+  guestName?: true
   propertyId?: true
   surveyType?: true
   purpose?: true
   preferredSchedule?: true
+  surveyDate?: true
   status?: true
+  statusMessage?: true
   previousStatus?: true
   onHoldReason?: true
   cancelReason?: true
@@ -102,11 +114,14 @@ export type ProjectMaxAggregateInputType = {
   id?: true
   clientId?: true
   guestPhone?: true
+  guestName?: true
   propertyId?: true
   surveyType?: true
   purpose?: true
   preferredSchedule?: true
+  surveyDate?: true
   status?: true
+  statusMessage?: true
   previousStatus?: true
   onHoldReason?: true
   cancelReason?: true
@@ -120,11 +135,14 @@ export type ProjectCountAggregateInputType = {
   id?: true
   clientId?: true
   guestPhone?: true
+  guestName?: true
   propertyId?: true
   surveyType?: true
   purpose?: true
   preferredSchedule?: true
+  surveyDate?: true
   status?: true
+  statusMessage?: true
   previousStatus?: true
   onHoldReason?: true
   cancelReason?: true
@@ -211,11 +229,14 @@ export type ProjectGroupByOutputType = {
   id: string
   clientId: string | null
   guestPhone: string | null
+  guestName: string | null
   propertyId: string
   surveyType: $Enums.SurveyType
   purpose: string | null
   preferredSchedule: string | null
+  surveyDate: Date | null
   status: $Enums.ProjectStatus
+  statusMessage: string | null
   previousStatus: $Enums.ProjectStatus | null
   onHoldReason: string | null
   cancelReason: string | null
@@ -250,11 +271,14 @@ export type ProjectWhereInput = {
   id?: Prisma.StringFilter<"Project"> | string
   clientId?: Prisma.StringNullableFilter<"Project"> | string | null
   guestPhone?: Prisma.StringNullableFilter<"Project"> | string | null
+  guestName?: Prisma.StringNullableFilter<"Project"> | string | null
   propertyId?: Prisma.StringFilter<"Project"> | string
   surveyType?: Prisma.EnumSurveyTypeFilter<"Project"> | $Enums.SurveyType
   purpose?: Prisma.StringNullableFilter<"Project"> | string | null
   preferredSchedule?: Prisma.StringNullableFilter<"Project"> | string | null
+  surveyDate?: Prisma.DateTimeNullableFilter<"Project"> | Date | string | null
   status?: Prisma.EnumProjectStatusFilter<"Project"> | $Enums.ProjectStatus
+  statusMessage?: Prisma.StringNullableFilter<"Project"> | string | null
   previousStatus?: Prisma.EnumProjectStatusNullableFilter<"Project"> | $Enums.ProjectStatus | null
   onHoldReason?: Prisma.StringNullableFilter<"Project"> | string | null
   cancelReason?: Prisma.StringNullableFilter<"Project"> | string | null
@@ -276,11 +300,14 @@ export type ProjectOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   clientId?: Prisma.SortOrderInput | Prisma.SortOrder
   guestPhone?: Prisma.SortOrderInput | Prisma.SortOrder
+  guestName?: Prisma.SortOrderInput | Prisma.SortOrder
   propertyId?: Prisma.SortOrder
   surveyType?: Prisma.SortOrder
   purpose?: Prisma.SortOrderInput | Prisma.SortOrder
   preferredSchedule?: Prisma.SortOrderInput | Prisma.SortOrder
+  surveyDate?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  statusMessage?: Prisma.SortOrderInput | Prisma.SortOrder
   previousStatus?: Prisma.SortOrderInput | Prisma.SortOrder
   onHoldReason?: Prisma.SortOrderInput | Prisma.SortOrder
   cancelReason?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -305,11 +332,14 @@ export type ProjectWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.ProjectWhereInput | Prisma.ProjectWhereInput[]
   clientId?: Prisma.StringNullableFilter<"Project"> | string | null
   guestPhone?: Prisma.StringNullableFilter<"Project"> | string | null
+  guestName?: Prisma.StringNullableFilter<"Project"> | string | null
   propertyId?: Prisma.StringFilter<"Project"> | string
   surveyType?: Prisma.EnumSurveyTypeFilter<"Project"> | $Enums.SurveyType
   purpose?: Prisma.StringNullableFilter<"Project"> | string | null
   preferredSchedule?: Prisma.StringNullableFilter<"Project"> | string | null
+  surveyDate?: Prisma.DateTimeNullableFilter<"Project"> | Date | string | null
   status?: Prisma.EnumProjectStatusFilter<"Project"> | $Enums.ProjectStatus
+  statusMessage?: Prisma.StringNullableFilter<"Project"> | string | null
   previousStatus?: Prisma.EnumProjectStatusNullableFilter<"Project"> | $Enums.ProjectStatus | null
   onHoldReason?: Prisma.StringNullableFilter<"Project"> | string | null
   cancelReason?: Prisma.StringNullableFilter<"Project"> | string | null
@@ -331,11 +361,14 @@ export type ProjectOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   clientId?: Prisma.SortOrderInput | Prisma.SortOrder
   guestPhone?: Prisma.SortOrderInput | Prisma.SortOrder
+  guestName?: Prisma.SortOrderInput | Prisma.SortOrder
   propertyId?: Prisma.SortOrder
   surveyType?: Prisma.SortOrder
   purpose?: Prisma.SortOrderInput | Prisma.SortOrder
   preferredSchedule?: Prisma.SortOrderInput | Prisma.SortOrder
+  surveyDate?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  statusMessage?: Prisma.SortOrderInput | Prisma.SortOrder
   previousStatus?: Prisma.SortOrderInput | Prisma.SortOrder
   onHoldReason?: Prisma.SortOrderInput | Prisma.SortOrder
   cancelReason?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -355,11 +388,14 @@ export type ProjectScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Project"> | string
   clientId?: Prisma.StringNullableWithAggregatesFilter<"Project"> | string | null
   guestPhone?: Prisma.StringNullableWithAggregatesFilter<"Project"> | string | null
+  guestName?: Prisma.StringNullableWithAggregatesFilter<"Project"> | string | null
   propertyId?: Prisma.StringWithAggregatesFilter<"Project"> | string
   surveyType?: Prisma.EnumSurveyTypeWithAggregatesFilter<"Project"> | $Enums.SurveyType
   purpose?: Prisma.StringNullableWithAggregatesFilter<"Project"> | string | null
   preferredSchedule?: Prisma.StringNullableWithAggregatesFilter<"Project"> | string | null
+  surveyDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Project"> | Date | string | null
   status?: Prisma.EnumProjectStatusWithAggregatesFilter<"Project"> | $Enums.ProjectStatus
+  statusMessage?: Prisma.StringNullableWithAggregatesFilter<"Project"> | string | null
   previousStatus?: Prisma.EnumProjectStatusNullableWithAggregatesFilter<"Project"> | $Enums.ProjectStatus | null
   onHoldReason?: Prisma.StringNullableWithAggregatesFilter<"Project"> | string | null
   cancelReason?: Prisma.StringNullableWithAggregatesFilter<"Project"> | string | null
@@ -372,10 +408,13 @@ export type ProjectScalarWhereWithAggregatesInput = {
 export type ProjectCreateInput = {
   id?: string
   guestPhone?: string | null
+  guestName?: string | null
   surveyType: $Enums.SurveyType
   purpose?: string | null
   preferredSchedule?: string | null
+  surveyDate?: Date | string | null
   status?: $Enums.ProjectStatus
+  statusMessage?: string | null
   previousStatus?: $Enums.ProjectStatus | null
   onHoldReason?: string | null
   cancelReason?: string | null
@@ -397,11 +436,14 @@ export type ProjectUncheckedCreateInput = {
   id?: string
   clientId?: string | null
   guestPhone?: string | null
+  guestName?: string | null
   propertyId: string
   surveyType: $Enums.SurveyType
   purpose?: string | null
   preferredSchedule?: string | null
+  surveyDate?: Date | string | null
   status?: $Enums.ProjectStatus
+  statusMessage?: string | null
   previousStatus?: $Enums.ProjectStatus | null
   onHoldReason?: string | null
   cancelReason?: string | null
@@ -420,10 +462,13 @@ export type ProjectUncheckedCreateInput = {
 export type ProjectUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   guestPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.EnumSurveyTypeFieldUpdateOperationsInput | $Enums.SurveyType
   purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferredSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousStatus?: Prisma.NullableEnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus | null
   onHoldReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -445,11 +490,14 @@ export type ProjectUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   clientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   guestPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   propertyId?: Prisma.StringFieldUpdateOperationsInput | string
   surveyType?: Prisma.EnumSurveyTypeFieldUpdateOperationsInput | $Enums.SurveyType
   purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferredSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousStatus?: Prisma.NullableEnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus | null
   onHoldReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -469,11 +517,14 @@ export type ProjectCreateManyInput = {
   id?: string
   clientId?: string | null
   guestPhone?: string | null
+  guestName?: string | null
   propertyId: string
   surveyType: $Enums.SurveyType
   purpose?: string | null
   preferredSchedule?: string | null
+  surveyDate?: Date | string | null
   status?: $Enums.ProjectStatus
+  statusMessage?: string | null
   previousStatus?: $Enums.ProjectStatus | null
   onHoldReason?: string | null
   cancelReason?: string | null
@@ -486,10 +537,13 @@ export type ProjectCreateManyInput = {
 export type ProjectUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   guestPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.EnumSurveyTypeFieldUpdateOperationsInput | $Enums.SurveyType
   purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferredSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousStatus?: Prisma.NullableEnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus | null
   onHoldReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -503,11 +557,14 @@ export type ProjectUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   clientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   guestPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   propertyId?: Prisma.StringFieldUpdateOperationsInput | string
   surveyType?: Prisma.EnumSurveyTypeFieldUpdateOperationsInput | $Enums.SurveyType
   purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferredSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousStatus?: Prisma.NullableEnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus | null
   onHoldReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -531,11 +588,14 @@ export type ProjectCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   clientId?: Prisma.SortOrder
   guestPhone?: Prisma.SortOrder
+  guestName?: Prisma.SortOrder
   propertyId?: Prisma.SortOrder
   surveyType?: Prisma.SortOrder
   purpose?: Prisma.SortOrder
   preferredSchedule?: Prisma.SortOrder
+  surveyDate?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  statusMessage?: Prisma.SortOrder
   previousStatus?: Prisma.SortOrder
   onHoldReason?: Prisma.SortOrder
   cancelReason?: Prisma.SortOrder
@@ -549,11 +609,14 @@ export type ProjectMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   clientId?: Prisma.SortOrder
   guestPhone?: Prisma.SortOrder
+  guestName?: Prisma.SortOrder
   propertyId?: Prisma.SortOrder
   surveyType?: Prisma.SortOrder
   purpose?: Prisma.SortOrder
   preferredSchedule?: Prisma.SortOrder
+  surveyDate?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  statusMessage?: Prisma.SortOrder
   previousStatus?: Prisma.SortOrder
   onHoldReason?: Prisma.SortOrder
   cancelReason?: Prisma.SortOrder
@@ -567,11 +630,14 @@ export type ProjectMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   clientId?: Prisma.SortOrder
   guestPhone?: Prisma.SortOrder
+  guestName?: Prisma.SortOrder
   propertyId?: Prisma.SortOrder
   surveyType?: Prisma.SortOrder
   purpose?: Prisma.SortOrder
   preferredSchedule?: Prisma.SortOrder
+  surveyDate?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  statusMessage?: Prisma.SortOrder
   previousStatus?: Prisma.SortOrder
   onHoldReason?: Prisma.SortOrder
   cancelReason?: Prisma.SortOrder
@@ -782,10 +848,13 @@ export type ProjectUpdateOneWithoutNotificationsNestedInput = {
 export type ProjectCreateWithoutClientInput = {
   id?: string
   guestPhone?: string | null
+  guestName?: string | null
   surveyType: $Enums.SurveyType
   purpose?: string | null
   preferredSchedule?: string | null
+  surveyDate?: Date | string | null
   status?: $Enums.ProjectStatus
+  statusMessage?: string | null
   previousStatus?: $Enums.ProjectStatus | null
   onHoldReason?: string | null
   cancelReason?: string | null
@@ -805,11 +874,14 @@ export type ProjectCreateWithoutClientInput = {
 export type ProjectUncheckedCreateWithoutClientInput = {
   id?: string
   guestPhone?: string | null
+  guestName?: string | null
   propertyId: string
   surveyType: $Enums.SurveyType
   purpose?: string | null
   preferredSchedule?: string | null
+  surveyDate?: Date | string | null
   status?: $Enums.ProjectStatus
+  statusMessage?: string | null
   previousStatus?: $Enums.ProjectStatus | null
   onHoldReason?: string | null
   cancelReason?: string | null
@@ -857,11 +929,14 @@ export type ProjectScalarWhereInput = {
   id?: Prisma.StringFilter<"Project"> | string
   clientId?: Prisma.StringNullableFilter<"Project"> | string | null
   guestPhone?: Prisma.StringNullableFilter<"Project"> | string | null
+  guestName?: Prisma.StringNullableFilter<"Project"> | string | null
   propertyId?: Prisma.StringFilter<"Project"> | string
   surveyType?: Prisma.EnumSurveyTypeFilter<"Project"> | $Enums.SurveyType
   purpose?: Prisma.StringNullableFilter<"Project"> | string | null
   preferredSchedule?: Prisma.StringNullableFilter<"Project"> | string | null
+  surveyDate?: Prisma.DateTimeNullableFilter<"Project"> | Date | string | null
   status?: Prisma.EnumProjectStatusFilter<"Project"> | $Enums.ProjectStatus
+  statusMessage?: Prisma.StringNullableFilter<"Project"> | string | null
   previousStatus?: Prisma.EnumProjectStatusNullableFilter<"Project"> | $Enums.ProjectStatus | null
   onHoldReason?: Prisma.StringNullableFilter<"Project"> | string | null
   cancelReason?: Prisma.StringNullableFilter<"Project"> | string | null
@@ -874,10 +949,13 @@ export type ProjectScalarWhereInput = {
 export type ProjectCreateWithoutPropertyInput = {
   id?: string
   guestPhone?: string | null
+  guestName?: string | null
   surveyType: $Enums.SurveyType
   purpose?: string | null
   preferredSchedule?: string | null
+  surveyDate?: Date | string | null
   status?: $Enums.ProjectStatus
+  statusMessage?: string | null
   previousStatus?: $Enums.ProjectStatus | null
   onHoldReason?: string | null
   cancelReason?: string | null
@@ -898,10 +976,13 @@ export type ProjectUncheckedCreateWithoutPropertyInput = {
   id?: string
   clientId?: string | null
   guestPhone?: string | null
+  guestName?: string | null
   surveyType: $Enums.SurveyType
   purpose?: string | null
   preferredSchedule?: string | null
+  surveyDate?: Date | string | null
   status?: $Enums.ProjectStatus
+  statusMessage?: string | null
   previousStatus?: $Enums.ProjectStatus | null
   onHoldReason?: string | null
   cancelReason?: string | null
@@ -945,10 +1026,13 @@ export type ProjectUpdateManyWithWhereWithoutPropertyInput = {
 export type ProjectCreateWithoutQuotationsInput = {
   id?: string
   guestPhone?: string | null
+  guestName?: string | null
   surveyType: $Enums.SurveyType
   purpose?: string | null
   preferredSchedule?: string | null
+  surveyDate?: Date | string | null
   status?: $Enums.ProjectStatus
+  statusMessage?: string | null
   previousStatus?: $Enums.ProjectStatus | null
   onHoldReason?: string | null
   cancelReason?: string | null
@@ -969,11 +1053,14 @@ export type ProjectUncheckedCreateWithoutQuotationsInput = {
   id?: string
   clientId?: string | null
   guestPhone?: string | null
+  guestName?: string | null
   propertyId: string
   surveyType: $Enums.SurveyType
   purpose?: string | null
   preferredSchedule?: string | null
+  surveyDate?: Date | string | null
   status?: $Enums.ProjectStatus
+  statusMessage?: string | null
   previousStatus?: $Enums.ProjectStatus | null
   onHoldReason?: string | null
   cancelReason?: string | null
@@ -1007,10 +1094,13 @@ export type ProjectUpdateToOneWithWhereWithoutQuotationsInput = {
 export type ProjectUpdateWithoutQuotationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   guestPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.EnumSurveyTypeFieldUpdateOperationsInput | $Enums.SurveyType
   purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferredSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousStatus?: Prisma.NullableEnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus | null
   onHoldReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1031,11 +1121,14 @@ export type ProjectUncheckedUpdateWithoutQuotationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   clientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   guestPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   propertyId?: Prisma.StringFieldUpdateOperationsInput | string
   surveyType?: Prisma.EnumSurveyTypeFieldUpdateOperationsInput | $Enums.SurveyType
   purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferredSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousStatus?: Prisma.NullableEnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus | null
   onHoldReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1053,10 +1146,13 @@ export type ProjectUncheckedUpdateWithoutQuotationsInput = {
 export type ProjectCreateWithoutPaymentsInput = {
   id?: string
   guestPhone?: string | null
+  guestName?: string | null
   surveyType: $Enums.SurveyType
   purpose?: string | null
   preferredSchedule?: string | null
+  surveyDate?: Date | string | null
   status?: $Enums.ProjectStatus
+  statusMessage?: string | null
   previousStatus?: $Enums.ProjectStatus | null
   onHoldReason?: string | null
   cancelReason?: string | null
@@ -1077,11 +1173,14 @@ export type ProjectUncheckedCreateWithoutPaymentsInput = {
   id?: string
   clientId?: string | null
   guestPhone?: string | null
+  guestName?: string | null
   propertyId: string
   surveyType: $Enums.SurveyType
   purpose?: string | null
   preferredSchedule?: string | null
+  surveyDate?: Date | string | null
   status?: $Enums.ProjectStatus
+  statusMessage?: string | null
   previousStatus?: $Enums.ProjectStatus | null
   onHoldReason?: string | null
   cancelReason?: string | null
@@ -1115,10 +1214,13 @@ export type ProjectUpdateToOneWithWhereWithoutPaymentsInput = {
 export type ProjectUpdateWithoutPaymentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   guestPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.EnumSurveyTypeFieldUpdateOperationsInput | $Enums.SurveyType
   purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferredSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousStatus?: Prisma.NullableEnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus | null
   onHoldReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1139,11 +1241,14 @@ export type ProjectUncheckedUpdateWithoutPaymentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   clientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   guestPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   propertyId?: Prisma.StringFieldUpdateOperationsInput | string
   surveyType?: Prisma.EnumSurveyTypeFieldUpdateOperationsInput | $Enums.SurveyType
   purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferredSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousStatus?: Prisma.NullableEnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus | null
   onHoldReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1161,10 +1266,13 @@ export type ProjectUncheckedUpdateWithoutPaymentsInput = {
 export type ProjectCreateWithoutDocumentsInput = {
   id?: string
   guestPhone?: string | null
+  guestName?: string | null
   surveyType: $Enums.SurveyType
   purpose?: string | null
   preferredSchedule?: string | null
+  surveyDate?: Date | string | null
   status?: $Enums.ProjectStatus
+  statusMessage?: string | null
   previousStatus?: $Enums.ProjectStatus | null
   onHoldReason?: string | null
   cancelReason?: string | null
@@ -1185,11 +1293,14 @@ export type ProjectUncheckedCreateWithoutDocumentsInput = {
   id?: string
   clientId?: string | null
   guestPhone?: string | null
+  guestName?: string | null
   propertyId: string
   surveyType: $Enums.SurveyType
   purpose?: string | null
   preferredSchedule?: string | null
+  surveyDate?: Date | string | null
   status?: $Enums.ProjectStatus
+  statusMessage?: string | null
   previousStatus?: $Enums.ProjectStatus | null
   onHoldReason?: string | null
   cancelReason?: string | null
@@ -1223,10 +1334,13 @@ export type ProjectUpdateToOneWithWhereWithoutDocumentsInput = {
 export type ProjectUpdateWithoutDocumentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   guestPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.EnumSurveyTypeFieldUpdateOperationsInput | $Enums.SurveyType
   purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferredSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousStatus?: Prisma.NullableEnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus | null
   onHoldReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1247,11 +1361,14 @@ export type ProjectUncheckedUpdateWithoutDocumentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   clientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   guestPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   propertyId?: Prisma.StringFieldUpdateOperationsInput | string
   surveyType?: Prisma.EnumSurveyTypeFieldUpdateOperationsInput | $Enums.SurveyType
   purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferredSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousStatus?: Prisma.NullableEnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus | null
   onHoldReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1269,10 +1386,13 @@ export type ProjectUncheckedUpdateWithoutDocumentsInput = {
 export type ProjectCreateWithoutAppointmentsInput = {
   id?: string
   guestPhone?: string | null
+  guestName?: string | null
   surveyType: $Enums.SurveyType
   purpose?: string | null
   preferredSchedule?: string | null
+  surveyDate?: Date | string | null
   status?: $Enums.ProjectStatus
+  statusMessage?: string | null
   previousStatus?: $Enums.ProjectStatus | null
   onHoldReason?: string | null
   cancelReason?: string | null
@@ -1293,11 +1413,14 @@ export type ProjectUncheckedCreateWithoutAppointmentsInput = {
   id?: string
   clientId?: string | null
   guestPhone?: string | null
+  guestName?: string | null
   propertyId: string
   surveyType: $Enums.SurveyType
   purpose?: string | null
   preferredSchedule?: string | null
+  surveyDate?: Date | string | null
   status?: $Enums.ProjectStatus
+  statusMessage?: string | null
   previousStatus?: $Enums.ProjectStatus | null
   onHoldReason?: string | null
   cancelReason?: string | null
@@ -1331,10 +1454,13 @@ export type ProjectUpdateToOneWithWhereWithoutAppointmentsInput = {
 export type ProjectUpdateWithoutAppointmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   guestPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.EnumSurveyTypeFieldUpdateOperationsInput | $Enums.SurveyType
   purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferredSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousStatus?: Prisma.NullableEnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus | null
   onHoldReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1355,11 +1481,14 @@ export type ProjectUncheckedUpdateWithoutAppointmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   clientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   guestPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   propertyId?: Prisma.StringFieldUpdateOperationsInput | string
   surveyType?: Prisma.EnumSurveyTypeFieldUpdateOperationsInput | $Enums.SurveyType
   purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferredSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousStatus?: Prisma.NullableEnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus | null
   onHoldReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1377,10 +1506,13 @@ export type ProjectUncheckedUpdateWithoutAppointmentsInput = {
 export type ProjectCreateWithoutStatusHistoryInput = {
   id?: string
   guestPhone?: string | null
+  guestName?: string | null
   surveyType: $Enums.SurveyType
   purpose?: string | null
   preferredSchedule?: string | null
+  surveyDate?: Date | string | null
   status?: $Enums.ProjectStatus
+  statusMessage?: string | null
   previousStatus?: $Enums.ProjectStatus | null
   onHoldReason?: string | null
   cancelReason?: string | null
@@ -1401,11 +1533,14 @@ export type ProjectUncheckedCreateWithoutStatusHistoryInput = {
   id?: string
   clientId?: string | null
   guestPhone?: string | null
+  guestName?: string | null
   propertyId: string
   surveyType: $Enums.SurveyType
   purpose?: string | null
   preferredSchedule?: string | null
+  surveyDate?: Date | string | null
   status?: $Enums.ProjectStatus
+  statusMessage?: string | null
   previousStatus?: $Enums.ProjectStatus | null
   onHoldReason?: string | null
   cancelReason?: string | null
@@ -1439,10 +1574,13 @@ export type ProjectUpdateToOneWithWhereWithoutStatusHistoryInput = {
 export type ProjectUpdateWithoutStatusHistoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   guestPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.EnumSurveyTypeFieldUpdateOperationsInput | $Enums.SurveyType
   purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferredSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousStatus?: Prisma.NullableEnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus | null
   onHoldReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1463,11 +1601,14 @@ export type ProjectUncheckedUpdateWithoutStatusHistoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   clientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   guestPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   propertyId?: Prisma.StringFieldUpdateOperationsInput | string
   surveyType?: Prisma.EnumSurveyTypeFieldUpdateOperationsInput | $Enums.SurveyType
   purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferredSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousStatus?: Prisma.NullableEnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus | null
   onHoldReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1485,10 +1626,13 @@ export type ProjectUncheckedUpdateWithoutStatusHistoryInput = {
 export type ProjectCreateWithoutNotificationsInput = {
   id?: string
   guestPhone?: string | null
+  guestName?: string | null
   surveyType: $Enums.SurveyType
   purpose?: string | null
   preferredSchedule?: string | null
+  surveyDate?: Date | string | null
   status?: $Enums.ProjectStatus
+  statusMessage?: string | null
   previousStatus?: $Enums.ProjectStatus | null
   onHoldReason?: string | null
   cancelReason?: string | null
@@ -1509,11 +1653,14 @@ export type ProjectUncheckedCreateWithoutNotificationsInput = {
   id?: string
   clientId?: string | null
   guestPhone?: string | null
+  guestName?: string | null
   propertyId: string
   surveyType: $Enums.SurveyType
   purpose?: string | null
   preferredSchedule?: string | null
+  surveyDate?: Date | string | null
   status?: $Enums.ProjectStatus
+  statusMessage?: string | null
   previousStatus?: $Enums.ProjectStatus | null
   onHoldReason?: string | null
   cancelReason?: string | null
@@ -1547,10 +1694,13 @@ export type ProjectUpdateToOneWithWhereWithoutNotificationsInput = {
 export type ProjectUpdateWithoutNotificationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   guestPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.EnumSurveyTypeFieldUpdateOperationsInput | $Enums.SurveyType
   purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferredSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousStatus?: Prisma.NullableEnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus | null
   onHoldReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1571,11 +1721,14 @@ export type ProjectUncheckedUpdateWithoutNotificationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   clientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   guestPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   propertyId?: Prisma.StringFieldUpdateOperationsInput | string
   surveyType?: Prisma.EnumSurveyTypeFieldUpdateOperationsInput | $Enums.SurveyType
   purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferredSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousStatus?: Prisma.NullableEnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus | null
   onHoldReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1593,11 +1746,14 @@ export type ProjectUncheckedUpdateWithoutNotificationsInput = {
 export type ProjectCreateManyClientInput = {
   id?: string
   guestPhone?: string | null
+  guestName?: string | null
   propertyId: string
   surveyType: $Enums.SurveyType
   purpose?: string | null
   preferredSchedule?: string | null
+  surveyDate?: Date | string | null
   status?: $Enums.ProjectStatus
+  statusMessage?: string | null
   previousStatus?: $Enums.ProjectStatus | null
   onHoldReason?: string | null
   cancelReason?: string | null
@@ -1610,10 +1766,13 @@ export type ProjectCreateManyClientInput = {
 export type ProjectUpdateWithoutClientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   guestPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.EnumSurveyTypeFieldUpdateOperationsInput | $Enums.SurveyType
   purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferredSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousStatus?: Prisma.NullableEnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus | null
   onHoldReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1633,11 +1792,14 @@ export type ProjectUpdateWithoutClientInput = {
 export type ProjectUncheckedUpdateWithoutClientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   guestPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   propertyId?: Prisma.StringFieldUpdateOperationsInput | string
   surveyType?: Prisma.EnumSurveyTypeFieldUpdateOperationsInput | $Enums.SurveyType
   purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferredSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousStatus?: Prisma.NullableEnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus | null
   onHoldReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1656,11 +1818,14 @@ export type ProjectUncheckedUpdateWithoutClientInput = {
 export type ProjectUncheckedUpdateManyWithoutClientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   guestPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   propertyId?: Prisma.StringFieldUpdateOperationsInput | string
   surveyType?: Prisma.EnumSurveyTypeFieldUpdateOperationsInput | $Enums.SurveyType
   purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferredSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousStatus?: Prisma.NullableEnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus | null
   onHoldReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1674,10 +1839,13 @@ export type ProjectCreateManyPropertyInput = {
   id?: string
   clientId?: string | null
   guestPhone?: string | null
+  guestName?: string | null
   surveyType: $Enums.SurveyType
   purpose?: string | null
   preferredSchedule?: string | null
+  surveyDate?: Date | string | null
   status?: $Enums.ProjectStatus
+  statusMessage?: string | null
   previousStatus?: $Enums.ProjectStatus | null
   onHoldReason?: string | null
   cancelReason?: string | null
@@ -1690,10 +1858,13 @@ export type ProjectCreateManyPropertyInput = {
 export type ProjectUpdateWithoutPropertyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   guestPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.EnumSurveyTypeFieldUpdateOperationsInput | $Enums.SurveyType
   purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferredSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousStatus?: Prisma.NullableEnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus | null
   onHoldReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1714,10 +1885,13 @@ export type ProjectUncheckedUpdateWithoutPropertyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   clientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   guestPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.EnumSurveyTypeFieldUpdateOperationsInput | $Enums.SurveyType
   purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferredSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousStatus?: Prisma.NullableEnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus | null
   onHoldReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1737,10 +1911,13 @@ export type ProjectUncheckedUpdateManyWithoutPropertyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   clientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   guestPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guestName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   surveyType?: Prisma.EnumSurveyTypeFieldUpdateOperationsInput | $Enums.SurveyType
   purpose?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   preferredSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  surveyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   previousStatus?: Prisma.NullableEnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus | null
   onHoldReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1830,11 +2007,14 @@ export type ProjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   id?: boolean
   clientId?: boolean
   guestPhone?: boolean
+  guestName?: boolean
   propertyId?: boolean
   surveyType?: boolean
   purpose?: boolean
   preferredSchedule?: boolean
+  surveyDate?: boolean
   status?: boolean
+  statusMessage?: boolean
   previousStatus?: boolean
   onHoldReason?: boolean
   cancelReason?: boolean
@@ -1857,11 +2037,14 @@ export type ProjectSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   id?: boolean
   clientId?: boolean
   guestPhone?: boolean
+  guestName?: boolean
   propertyId?: boolean
   surveyType?: boolean
   purpose?: boolean
   preferredSchedule?: boolean
+  surveyDate?: boolean
   status?: boolean
+  statusMessage?: boolean
   previousStatus?: boolean
   onHoldReason?: boolean
   cancelReason?: boolean
@@ -1877,11 +2060,14 @@ export type ProjectSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   id?: boolean
   clientId?: boolean
   guestPhone?: boolean
+  guestName?: boolean
   propertyId?: boolean
   surveyType?: boolean
   purpose?: boolean
   preferredSchedule?: boolean
+  surveyDate?: boolean
   status?: boolean
+  statusMessage?: boolean
   previousStatus?: boolean
   onHoldReason?: boolean
   cancelReason?: boolean
@@ -1897,11 +2083,14 @@ export type ProjectSelectScalar = {
   id?: boolean
   clientId?: boolean
   guestPhone?: boolean
+  guestName?: boolean
   propertyId?: boolean
   surveyType?: boolean
   purpose?: boolean
   preferredSchedule?: boolean
+  surveyDate?: boolean
   status?: boolean
+  statusMessage?: boolean
   previousStatus?: boolean
   onHoldReason?: boolean
   cancelReason?: boolean
@@ -1911,7 +2100,7 @@ export type ProjectSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ProjectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "clientId" | "guestPhone" | "propertyId" | "surveyType" | "purpose" | "preferredSchedule" | "status" | "previousStatus" | "onHoldReason" | "cancelReason" | "createdBy" | "createdByStaffId" | "createdAt" | "updatedAt", ExtArgs["result"]["project"]>
+export type ProjectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "clientId" | "guestPhone" | "guestName" | "propertyId" | "surveyType" | "purpose" | "preferredSchedule" | "surveyDate" | "status" | "statusMessage" | "previousStatus" | "onHoldReason" | "cancelReason" | "createdBy" | "createdByStaffId" | "createdAt" | "updatedAt", ExtArgs["result"]["project"]>
 export type ProjectInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   client?: boolean | Prisma.Project$clientArgs<ExtArgs>
   property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
@@ -1948,11 +2137,14 @@ export type $ProjectPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     id: string
     clientId: string | null
     guestPhone: string | null
+    guestName: string | null
     propertyId: string
     surveyType: $Enums.SurveyType
     purpose: string | null
     preferredSchedule: string | null
+    surveyDate: Date | null
     status: $Enums.ProjectStatus
+    statusMessage: string | null
     previousStatus: $Enums.ProjectStatus | null
     onHoldReason: string | null
     cancelReason: string | null
@@ -2394,11 +2586,14 @@ export interface ProjectFieldRefs {
   readonly id: Prisma.FieldRef<"Project", 'String'>
   readonly clientId: Prisma.FieldRef<"Project", 'String'>
   readonly guestPhone: Prisma.FieldRef<"Project", 'String'>
+  readonly guestName: Prisma.FieldRef<"Project", 'String'>
   readonly propertyId: Prisma.FieldRef<"Project", 'String'>
   readonly surveyType: Prisma.FieldRef<"Project", 'SurveyType'>
   readonly purpose: Prisma.FieldRef<"Project", 'String'>
   readonly preferredSchedule: Prisma.FieldRef<"Project", 'String'>
+  readonly surveyDate: Prisma.FieldRef<"Project", 'DateTime'>
   readonly status: Prisma.FieldRef<"Project", 'ProjectStatus'>
+  readonly statusMessage: Prisma.FieldRef<"Project", 'String'>
   readonly previousStatus: Prisma.FieldRef<"Project", 'ProjectStatus'>
   readonly onHoldReason: Prisma.FieldRef<"Project", 'String'>
   readonly cancelReason: Prisma.FieldRef<"Project", 'String'>

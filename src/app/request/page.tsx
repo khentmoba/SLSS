@@ -160,6 +160,15 @@ export default function RequestPage() {
             </div>
 
             <div className="mt-4 grid md:grid-cols-2 gap-4">
+              <label className="space-y-1.5"><div className="text-xs font-medium">Client Name (e.g., Khent Felary Sanco) — for public track</div><input name="guestName" placeholder="Khent Felary Sanco" className="w-full rounded-xl border px-3.5 py-2.5 text-[16px] sm:text-sm border-zinc-200" /></label>
+              <label className="space-y-1.5"><div className="text-xs font-medium">Survey Date (for tracking)</div><input name="surveyDate" type="date" className="w-full rounded-xl border px-3.5 py-2.5 text-[16px] sm:text-sm border-zinc-200" /></label>
+            </div>
+            <div className="mt-4 space-y-1.5">
+              <div className="text-xs font-medium">Status Message — visible sa client sa /track (e.g., kulang tax declaration / submit na sa DENR)</div>
+              <input name="statusMessage" placeholder="Kulang ang papel ug tax declaration — palihog provide Tax Dec" className="w-full rounded-xl border px-3.5 py-2.5 text-[16px] sm:text-sm border-zinc-200" />
+              <div className="text-xs text-zinc-500">Kini ang una makita ni client inig search niya sa lot number — no login needed.</div>
+            </div>
+            <div className="mt-4 grid md:grid-cols-2 gap-4">
               <label className="space-y-1.5"><div className="text-xs font-medium">Guest phone (if not signed in)</div><input name="guestPhone" placeholder="09171234567" className="w-full rounded-xl border px-3.5 py-2.5 text-[16px] sm:text-sm border-zinc-200" /><div className="text-xs text-zinc-600">Same phone = same My Properties. OTP claims provisionals.</div></label>
               <div className="rounded-xl bg-emerald-50 border border-emerald-200 p-3 text-xs text-emerald-800">
                 What happens next: <b>DOCUMENT CHECK</b> (we verify) → <b>QUOTATION</b> (we price) → <b>PAYMENT</b> (you confirm) → <b>SITE SURVEY</b>.

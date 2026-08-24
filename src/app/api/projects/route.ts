@@ -12,14 +12,13 @@ export async function POST(req: NextRequest) {
   const d = parsed.data;
   const clientPhone = req.cookies.get("client_phone")?.value ?? d.guestPhone ?? null;
   const clientId = req.cookies.get("client_id")?.value ?? null;
+  const staffId = req.cookies.get("staff_id")?.value ?? null;
 
-  // one active project guard per property (if titleNo provided)
   // property handling
   let propertyId = d.propertyId ?? null;
   if (!propertyId) {
     if (!d.municipality || !d.province) return NextResponse.json({ error: "Municipality/province required for new property" }, { status: 400 });
     const label = d.propertyLabel ?? `Lot ${d.lotNo ?? "—"} – ${d.municipality}`;
-    // dedup warning by titleNo
     if (d.titleNo) {
       const dup = await prisma.property.findFirst({ where: { titleNo: d.titleNo } });
       if (dup) console.log(`[WARN] duplicate titleNo ${d.titleNo} vs property ${dup.id}`);
@@ -43,11 +42,17 @@ export async function POST(req: NextRequest) {
     });
     propertyId = prop.id;
   } else {
-    // guard: only one active project per property
     const active = await prisma.project.findFirst({
       where: { propertyId, status: { notIn: ["COMPLETED", "CANCELLED"] } },
     });
     if (active) return NextResponse.json({ error: "This property already has an active project. Complete or cancel before new request.", activeProjectId: active.id }, { status: 409 });
+  }
+
+  // parse surveyDate if provided
+  let surveyDate: Date | undefined = undefined;
+  if (d.surveyDate) {
+    const parsedDate = new Date(d.surveyDate);
+    if (!isNaN(parsedDate.getTime())) surveyDate = parsedDate;
   }
 
   const project = await prisma.project.create({
@@ -56,19 +61,22 @@ export async function POST(req: NextRequest) {
       surveyType: d.surveyType,
       purpose: d.purpose,
       preferredSchedule: d.preferredSchedule,
+      surveyDate,
+      statusMessage: d.statusMessage ?? null,
+      guestName: d.guestName ?? null,
       status: "CLIENT_REQUEST",
-      createdBy: clientId ? "CLIENT" : d.guestPhone ? "GUEST" : "CLIENT",
+      createdBy: staffId ? "STAFF" : clientId ? "CLIENT" : d.guestPhone ? "GUEST" : "CLIENT",
       clientId: clientId ?? undefined,
       guestPhone: !clientId ? clientPhone : null,
+      createdByStaffId: staffId ?? undefined,
     },
     include: { property: true },
   });
 
   await prisma.projectStatusHistory.create({
-    data: { projectId: project.id, fromStatus: "CLIENT_REQUEST", toStatus: "CLIENT_REQUEST", byClientId: clientId ?? undefined, note: "Project created" },
+    data: { projectId: project.id, fromStatus: "CLIENT_REQUEST", toStatus: "CLIENT_REQUEST", byClientId: clientId ?? undefined, byStaffId: staffId ?? undefined, note: d.statusMessage ?? "Project created" },
   });
 
-  // seed required Document rows from checklist template (or defaults)
   const templates = await prisma.documentChecklistTemplate.findMany({ where: { surveyType: d.surveyType } });
   const defaults: Array<{ docType: any; req: "REQUIRED" | "OPTIONAL" }> =
     templates.length > 0
@@ -92,14 +100,14 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  // auto-advance to DOCUMENT_CHECK (staff will verify)
   await prisma.project.update({ where: { id: project.id }, data: { status: "DOCUMENT_CHECK" } });
   await prisma.projectStatusHistory.create({
-    data: { projectId: project.id, fromStatus: "CLIENT_REQUEST", toStatus: "DOCUMENT_CHECK", byClientId: clientId ?? undefined, note: "Moved to document check" },
+    data: { projectId: project.id, fromStatus: "CLIENT_REQUEST", toStatus: "DOCUMENT_CHECK", byClientId: clientId ?? undefined, byStaffId: staffId ?? undefined, note: d.statusMessage ?? "Moved to document check" },
   });
 
   await triggers.projectCreated(project as any);
 
+  // if statusMessage provided and different, ensure it's persisted (already set)
   return NextResponse.json({ ok: true, project });
 }
 
@@ -110,7 +118,6 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const propertyId = searchParams.get("propertyId");
 
-  // staff sees all; client sees own + guestPhone
   let where: any = {};
   if (!staff) {
     if (clientId) where = { OR: [{ clientId }, { guestPhone: phone }] };
@@ -121,7 +128,7 @@ export async function GET(req: NextRequest) {
 
   const projects = await prisma.project.findMany({
     where,
-    include: { property: true, quotations: { orderBy: { version: "desc" } }, documents: true, appointments: true },
+    include: { property: true, quotations: { orderBy: { version: "desc" } }, documents: true, appointments: true, statusHistory: { orderBy: { createdAt: "asc" } } },
     orderBy: { updatedAt: "desc" },
   });
   return NextResponse.json({ projects });

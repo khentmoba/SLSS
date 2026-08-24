@@ -132,13 +132,16 @@ model Project {
   clientId     String?
   client       Client?       @relation("ClientProjects", fields: [clientId], references: [id])
   guestPhone   String?       // set when created by guest/staff on behalf of phone
+  guestName    String?       // staff-entered client name for public tracking (e.g., Khent Felary Sanco)
   propertyId   String
   property     Property      @relation(fields: [propertyId], references: [id])
 
   surveyType   SurveyType
   purpose      String?
   preferredSchedule String?
+  surveyDate   DateTime?     // staff-entered actual survey date (e.g., 2026-08-02)
   status       ProjectStatus @default(CLIENT_REQUEST)
+  statusMessage String?      // staff free-text visible to client (e.g., kulang tax declaration / submit na sa DENR)
   // For ON_HOLD/CANCELLED we keep previousStatus for revert
   previousStatus ProjectStatus?
   onHoldReason String?
@@ -161,6 +164,8 @@ model Project {
   @@index([propertyId])
   @@index([status])
   @@index([guestPhone])
+  @@index([guestName])
+  @@index([surveyDate])
 }
 
 // ── Quotation — versioned inside QUOTATION status ─────────────────

@@ -59,3 +59,23 @@ body {
 .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
 
 .rule { border-color: var(--rule); }
+/* scroll reveal */
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.72s cubic-bezier(0.16,1,0.3,1), transform 0.72s cubic-bezier(0.16,1,0.3,1); will-change: opacity, transform; }
+.reveal.in { opacity: 1; transform: none; }
+.reveal-delay-1 { transition-delay: 80ms; }
+.reveal-delay-2 { transition-delay: 150ms; }
+.reveal-delay-3 { transition-delay: 220ms; }
+.reveal-delay-4 { transition-delay: 300ms; }
+.reveal-delay-5 { transition-delay: 380ms; }
+@keyframes floatY { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-6px) } }
+.animate-float { animation: floatY 6s ease-in-out infinite; }
+.topo-grid {
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(10,74,58,0.08) 1px, transparent 0),
+    linear-gradient(rgba(10,74,58,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(10,74,58,0.035) 1px, transparent 1px);
+  background-size: 22px 22px, 44px 44px, 44px 44px;
+  background-position: -1px -1px, 0 0, 0 0;
+}
+#progress-bar { transform-origin: left; }
+.parallax-slow { will-change: transform; }

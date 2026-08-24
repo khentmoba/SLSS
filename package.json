@@ -7,7 +7,7 @@
     "build": "prisma generate && next build --webpack",
     "start": "next start",
     "lint": "eslint",
-    "postinstall": "prisma generate",
+    "postinstall": "prisma generate && node scripts/patch-next-agent.js",
     "vercel-build": "(prisma generate || echo prisma_generate_failed) && next build --webpack"
   },
   "dependencies": {
