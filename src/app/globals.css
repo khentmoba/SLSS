@@ -1,8 +1,18 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fdfcfb;
+  --foreground: #18181b;
+  --paper: #fdfcfb;
+  --ink: #0f1412;
+  --stone: #f6f4f1;
+  --rule: #e7e5e4;
+  --sanco: #0a4a3a;
+  --sanco-mid: #0f6b52;
+  --sanco-soft: #e6f4ef;
+  --sanco-dark: #0f3d2e;
+  --sanco-light: #ecfdf5;
+  --radius: 16px;
 }
 
 @theme inline {
@@ -10,17 +20,42 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-sanco: var(--sanco);
+  --color-sanco-dark: var(--sanco-dark);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+* { scrollbar-width: thin; scrollbar-color: #a1a1aa transparent; }
+*::-webkit-scrollbar { width: 6px; height: 6px; }
+*::-webkit-scrollbar-thumb { background: #a1a1aa; border-radius: 999px; }
+*::-webkit-scrollbar-track { background: transparent; }
 
+html { scroll-behavior: smooth; }
 body {
-  background: var(--background);
+  background: var(--paper);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
+
+.skip-link { position: absolute; inset-inline-start: -999px; top: 12px; z-index: 100; background: var(--sanco); color: white; padding: 10px 16px; border-radius: 999px; font-size: 14px; font-weight: 600; }
+.skip-link:focus { inset-inline-start: 16px; }
+
+:focus-visible { outline: 2px solid #0a4a3a; outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  .animate-fadeIn { animation: none !important; }
+}
+
+@keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+.animate-fadeIn { animation: fadeIn 0.32s cubic-bezier(0.16, 1, 0.3, 1); }
+
+.card { box-shadow: 0 1px 2px rgba(16, 24, 20, 0.06), 0 8px 24px rgba(16, 24, 20, 0.05); }
+
+.scrollbar-none::-webkit-scrollbar { display: none; }
+.scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+
+.rule { border-color: var(--rule); }

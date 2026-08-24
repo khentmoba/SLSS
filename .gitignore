@@ -39,3 +39,29 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+/src/generated/prisma
+
+# local database & logs
+*.db
+*.db-journal
+dev.log
+dev-err.log
+
+# uploads (local filesystem fallback for storage.ts)
+public/uploads/
+
+# pwa generated (rebuilt on build)
+public/sw.js
+public/workbox-*.js
+public/swe-worker-*.js
+
+# local tooling / agent caches
+.agents/
+.claude/
+.windsurf/
+.commandcode/
+skills-lock.json
+
+# duplicate asset — canonical is public/slss_logo.jpg
+/slss_logo.jpg

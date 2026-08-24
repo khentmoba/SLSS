@@ -1,0 +1,428 @@
+// Sanco Land Surveying Services — Client Portal (8-step pipeline)
+// PWA + API-first, ready for native shell + online payments
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// ── Actors ──────────────────────────────────────────────────────────
+
+model Client {
+  id           String   @id @default(cuid())
+  phone        String   @unique // E.164 without spaces, e.g., 09171234567
+  name         String?
+  email        String?
+  verifiedAt   DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  properties   Property[]
+  projects     Project[]  @relation("ClientProjects")
+  notifications Notification[]
+  statusHistory ProjectStatusHistory[]
+
+  @@index([phone])
+}
+
+model Staff {
+  id        String   @id @default(cuid())
+  phone     String?  @unique
+  email     String   @unique
+  name      String
+  role      StaffRole @default(STAFF)
+  passwordHash String? // for staff login (MVP simple)
+  createdAt DateTime @default(now())
+
+  quotationsCreated Quotation[] @relation("StaffQuotations")
+  appointmentsConfirmed Appointment[]
+  documentsVerified Document[]
+  paymentsConfirmed Payment[]
+  statusTransitions ProjectStatusHistory[]
+}
+
+enum StaffRole {
+  STAFF
+  ESTIMATOR
+  ADMIN
+}
+
+// Provisional OTP — Semaphore / EngageSpark abstraction
+model OtpChallenge {
+  id        String   @id @default(cuid())
+  phone     String
+  code      String
+  expiresAt DateTime
+  attempts  Int      @default(0)
+  verified  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([phone, expiresAt])
+}
+
+// ── Property — durable parcel ─────────────────────────────────────
+
+model Property {
+  id           String   @id @default(cuid())
+  clientId     String?
+  client       Client?  @relation(fields: [clientId], references: [id])
+  guestPhone   String?  // provisional owner before OTP claim
+
+  label        String   // e.g., "Lot 1234 – Cabadbaran"
+  lotNo        String?
+  titleNo      String?  // TCT/OCT - optional for untitled land; warn on duplicate
+  taxDecNo     String?
+  barangay     String?
+  municipality String?
+  province     String?
+  areaSqm      Float?
+  gpsLat       Float?
+  gpsLng       Float?
+  addressNotes String?
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  projects     Project[]
+  documents    Document[]
+
+  @@index([clientId])
+  @@index([titleNo])
+  @@index([guestPhone])
+}
+
+// ── Project — 8-step pipeline ─────────────────────────────────────
+
+enum SurveyType {
+  LAND_PROPERTY_SURVEY
+  RELOCATION_SURVEY
+  SUBDIVISION_SURVEY
+  CONSOLIDATION_SURVEY
+  TOPOGRAPHIC_SURVEY
+  BOUNDARY_VERIFICATION
+  OTHER
+}
+
+enum ProjectStatus {
+  CLIENT_REQUEST
+  DOCUMENT_CHECK
+  QUOTATION
+  PAYMENT_CONFIRMATION
+  SITE_SURVEY
+  PROCESSING
+  DOCUMENTATION
+  COMPLETED
+  // terminal overlays
+  ON_HOLD
+  CANCELLED
+}
+
+enum CreatedBy {
+  CLIENT
+  STAFF
+  GUEST
+}
+
+model Project {
+  id           String        @id @default(cuid())
+  clientId     String?
+  client       Client?       @relation("ClientProjects", fields: [clientId], references: [id])
+  guestPhone   String?       // set when created by guest/staff on behalf of phone
+  propertyId   String
+  property     Property      @relation(fields: [propertyId], references: [id])
+
+  surveyType   SurveyType
+  purpose      String?
+  preferredSchedule String?
+  status       ProjectStatus @default(CLIENT_REQUEST)
+  // For ON_HOLD/CANCELLED we keep previousStatus for revert
+  previousStatus ProjectStatus?
+  onHoldReason String?
+  cancelReason String?
+
+  createdBy    CreatedBy
+  createdByStaffId String?
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  quotations   Quotation[]
+  payments     Payment[]
+  documents    Document[]
+  appointments Appointment[]
+  statusHistory ProjectStatusHistory[]
+  notifications Notification[]
+
+  @@index([clientId])
+  @@index([propertyId])
+  @@index([status])
+  @@index([guestPhone])
+}
+
+// ── Quotation — versioned inside QUOTATION status ─────────────────
+
+enum QuotationStatus {
+  SENT
+  CLARIFICATION_REQUESTED
+  ACCEPTED
+  REJECTED
+  EXPIRED
+}
+
+model Quotation {
+  id        String          @id @default(cuid())
+  projectId String
+  project   Project         @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  version   Int             @default(1)
+
+  surveyFee Float
+  otherFees Json?           // [{ label: "Travel", amount: 2000 }, ...]
+  total     Float
+  validUntil DateTime
+
+  status    QuotationStatus @default(SENT)
+  note      String?
+  createdByStaffId String?
+  createdByStaff Staff? @relation("StaffQuotations", fields: [createdByStaffId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  payments  Payment[]
+  clarifications QuotationClarification[]
+
+  @@unique([projectId, version])
+  @@index([projectId, status])
+}
+
+model QuotationClarification {
+  id          String   @id @default(cuid())
+  quotationId String
+  quotation   Quotation @relation(fields: [quotationId], references: [id], onDelete: Cascade)
+  message     String
+  byClientId  String?
+  byStaffId   String?
+  createdAt   DateTime @default(now())
+}
+
+// ── Payment — extensible for future GCash/Maya/Card ───────────────
+
+enum PaymentMethod {
+  MANUAL
+  GCASH
+  MAYA
+  CARD
+  BANK_TRANSFER
+}
+
+enum PaymentStatus {
+  PENDING
+  CONFIRMED
+  FAILED
+}
+
+model Payment {
+  id          String        @id @default(cuid())
+  projectId   String
+  project     Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  quotationId String?
+  quotation   Quotation?    @relation(fields: [quotationId], references: [id])
+
+  method      PaymentMethod @default(MANUAL)
+  status      PaymentStatus @default(PENDING)
+  amount      Float
+  referenceId String?       // provider ref
+  proofUrl    String?       // receipt photo URL
+  proofFileName String?
+
+  confirmedAt DateTime?
+  confirmedByStaffId String?
+  confirmedByStaff Staff? @relation(fields: [confirmedByStaffId], references: [id])
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([projectId])
+  @@index([status])
+}
+
+// ── Document — per SurveyType checklist, state machine ───────────
+
+enum DocumentType {
+  TCT_OCT
+  TAX_DECLARATION
+  DEED_OF_SALE
+  LOT_PLAN
+  VALID_ID
+  OTHER
+  SUPPORTING_RECORD // output: AutoCAD PDF preview + Drive link
+}
+
+enum DocumentRequirement {
+  REQUIRED
+  OPTIONAL
+}
+
+enum DocumentState {
+  MISSING
+  UPLOADED
+  VERIFIED
+  REJECTED
+}
+
+model Document {
+  id          String               @id @default(cuid())
+  projectId   String?
+  project     Project?             @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  propertyId  String?
+  property    Property?            @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  type        DocumentType
+  requirement DocumentRequirement  @default(OPTIONAL)
+  state       DocumentState        @default(MISSING)
+
+  fileUrl     String?
+  fileName    String?
+  fileSize    Int?
+  mimeType    String?
+
+  // For SUPPORTING_RECORD reference to Drive
+  externalUrl String? // GDrive / external reference
+
+  uploadedByClientId String?
+  uploadedByStaffId  String?
+  verifiedByStaffId  String?
+  verifiedBy         Staff? @relation(fields: [verifiedByStaffId], references: [id])
+  rejectionReason String?
+
+  // audit
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([projectId])
+  @@index([propertyId])
+  @@index([type, state])
+}
+
+// checklist template per SurveyType (staff-configurable)
+model DocumentChecklistTemplate {
+  id          String               @id @default(cuid())
+  surveyType  SurveyType
+  docType     DocumentType
+  requirement DocumentRequirement
+  label       String?
+  createdAt   DateTime @default(now())
+
+  @@unique([surveyType, docType])
+}
+
+// ── Appointment — drives SITE_SURVEY ──────────────────────────────
+
+enum AppointmentStatus {
+  REQUESTED
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+  RESCHEDULED
+}
+
+model Appointment {
+  id          String            @id @default(cuid())
+  projectId   String
+  project     Project           @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  date        DateTime
+  time        String?           // e.g., "09:00 AM"
+  alternateDate DateTime?
+  siteLocation String
+  contactPerson String
+  contactPhone String?
+
+  status      AppointmentStatus @default(REQUESTED)
+  note        String?
+
+  confirmedByStaffId String?
+  confirmedBy Staff? @relation(fields: [confirmedByStaffId], references: [id])
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([projectId, date])
+}
+
+// ── History & Logs ────────────────────────────────────────────────
+
+model ProjectStatusHistory {
+  id        String        @id @default(cuid())
+  projectId String
+  project   Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  fromStatus ProjectStatus
+  toStatus   ProjectStatus
+  note       String?
+  byStaffId  String?
+  byStaff    Staff?        @relation(fields: [byStaffId], references: [id])
+  byClientId String?
+  byClient   Client?       @relation(fields: [byClientId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@index([projectId, createdAt])
+}
+
+model DocumentAccessLog {
+  id         String   @id @default(cuid())
+  documentId String
+  byStaffId  String?
+  byClientId String?
+  action     String   // VIEW, DOWNLOAD, VERIFY, REJECT
+  createdAt  DateTime @default(now())
+
+  @@index([documentId])
+}
+
+// ── Notifications — abstraction for future native push ────────────
+
+enum NotificationChannel {
+  IN_APP
+  EMAIL
+  SMS
+  PUSH // future native FCM/APNs; PWA web-push maps here too
+}
+
+enum NotificationType {
+  PROJECT_CREATED
+  DOCUMENT_REQUIRED
+  DOCUMENT_VERIFIED
+  DOCUMENT_REJECTED
+  QUOTATION_SENT
+  QUOTATION_EXPIRING
+  QUOTATION_ACCEPTED
+  PAYMENT_CONFIRMED
+  APPOINTMENT_REQUESTED
+  APPOINTMENT_CONFIRMED
+  APPOINTMENT_RESCHEDULED
+  STATUS_CHANGED
+  PROJECT_COMPLETED
+}
+
+model Notification {
+  id        String              @id @default(cuid())
+  clientId  String?
+  client    Client?             @relation(fields: [clientId], references: [id])
+  projectId String?
+  project   Project?            @relation(fields: [projectId], references: [id])
+
+  type      NotificationType
+  channel   NotificationChannel
+  title     String
+  body      String
+  payload   Json?
+  read      Boolean             @default(false)
+  sentAt    DateTime            @default(now())
+
+  @@index([clientId, read])
+  @@index([projectId])
+}

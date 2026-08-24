@@ -1,0 +1,12 @@
+﻿{
+  "name": "Sanco Land Surveying",
+  "short_name": "Sanco",
+  "description": "Your Property. Our Precision. - Client Portal",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#065f46",
+  "icons": [
+    { "src": "/slss_logo.jpg", "sizes": "512x512", "type": "image/jpeg" }
+  ]
+}
