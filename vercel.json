@@ -1,0 +1,5 @@
+{
+  "framework": "nextjs",
+  "installCommand": "npm install --ignore-scripts=false",
+  "buildCommand": "(prisma generate || echo \"prisma generate failed, using committed client\") && next build --webpack"
+}
