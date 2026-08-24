@@ -119,16 +119,68 @@ export default function Home() {
         <div className="absolute top-16 right-8 hidden lg:block" aria-hidden><Crosshair className="text-[#1d3820] opacity-25 h-16 w-16" /></div>
         <div className="absolute bottom-24 left-[38%] hidden lg:block" aria-hidden><Crosshair className="text-[#1d3820] opacity-15 h-28 w-28" /></div>
 
-        <div className="relative w-full overflow-hidden border-y border-[#1d3820]/20 bg-white">
-          <div className="rule-label !text-[10px] bg-[#16301a] text-[#dbe5d4] px-4 py-2 flex items-center justify-between max-w-6xl mx-auto">
+                <div className="relative w-full border-t border-[#1d3820]/20 bg-white">
+          <div className="rule-label !text-[10px] bg-[#16301a] text-[#dbe5d4] px-4 py-2 flex items-center justify-between max-w-6xl mx-auto relative z-10">
             <span>SANCO LAND SURVEYING SERVICES</span>
             <span className="hidden sm:block">FIELD RECORD · EST. 2018</span>
             <span className="hidden md:block">9°12′N · 125°32′E</span>
           </div>
-          <picture>
-            <source srcSet="/sanco_landing_logo.webp" type="image/webp" />
-            <img src="/sanco_landing_logo.png" alt="Sanco Land Surveying Services" width={2400} height={975} className="w-full h-auto block" draggable={false} fetchPriority="high" />
-          </picture>
+          <div className="relative overflow-hidden">
+            <picture>
+              <source srcSet="/sanco_landing_logo.webp" type="image/webp" />
+              <img
+                src="/sanco_landing_logo.png"
+                alt="Sanco Land Surveying Services"
+                width={2400}
+                height={975}
+                className="w-full h-auto block"
+                draggable={false}
+                fetchPriority="high"
+                style={{
+                  WebkitMaskImage:
+                    "linear-gradient(to bottom, black 78%, rgba(0,0,0,0.88) 84%, rgba(0,0,0,0.52) 90%, rgba(0,0,0,0.16) 95%, transparent 100%)",
+                  maskImage:
+                    "linear-gradient(to bottom, black 78%, rgba(0,0,0,0.88) 84%, rgba(0,0,0,0.52) 90%, rgba(0,0,0,0.16) 95%, transparent 100%)",
+                }}
+              />
+            </picture>
+            {/* ultra-soft bottom feather — only the last ~22% fades, logo/text stay 100% opaque */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-x-0 bottom-0 h-[22%] lg:h-[26%]"
+              style={{
+                background:
+                  "linear-gradient(to bottom, rgba(244,239,225,0) 0%, rgba(244,239,225,0.28) 32%, rgba(244,239,225,0.62) 58%, rgba(244,239,225,0.88) 78%, #f4efe1 92%)",
+              }}
+            />
+            {/* thin base to erase the 1px seam — only 56-88px tall */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-x-0 bottom-0 h-[56px] lg:h-[88px]"
+              style={{
+                background: "linear-gradient(to bottom, transparent 0%, rgba(244,239,225,0.92) 48%, #f4efe1 78%)",
+              }}
+            />
+            {/* subtle grid continuation through the very bottom only */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-x-0 bottom-0 h-[72px] lg:h-[96px] draft-grid opacity-[0.12]"
+              style={{
+                WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 55%, black 100%)",
+                maskImage: "linear-gradient(to bottom, transparent 0%, black 55%, black 100%)",
+              }}
+            />
+          </div>
+          {/* outside bleed — softens the stitch just below the image, not over the logo */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 top-full -mt-[18px] lg:-mt-[24px] h-[28px] lg:h-[36px] bg-[#f4efe1]"
+            style={{ filter: "blur(5px)", opacity: 0.96 }}
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 top-full -mt-[1px] h-[18px] bg-gradient-to-b from-[#f4efe1] to-transparent"
+          />
         </div>
 
         <div className="relative max-w-6xl mx-auto px-4">
