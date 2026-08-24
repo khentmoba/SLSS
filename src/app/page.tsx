@@ -82,7 +82,10 @@ export default function Home() {
           <path d="M -40 300 C 180 260, 340 330, 560 290 S 740 240, 840 310" fill="none" stroke="#0a4a3a" strokeWidth="0.6" />
         </svg>
               <div className="relative w-full overflow-hidden bg-white border-y border-zinc-200 reveal" style={{ opacity: heroFade } as any}>
-        <img src="/sanco_landing_logo.png" alt="Sanco Land Surveying Services" width={1200} height={480} className="w-full h-auto block" draggable={false} fetchPriority="high" />
+        <picture>
+          <source srcSet="/sanco_landing_logo.webp" type="image/webp" />
+          <img src="/sanco_landing_logo.png" alt="Sanco Land Surveying Services" width={2400} height={975} className="w-full h-auto block" draggable={false} fetchPriority="high" />
+        </picture>
       </div>
       <div className="relative max-w-6xl mx-auto px-4">
           <div className="grid lg:grid-cols-[1.12fr_0.88fr] gap-8 lg:gap-6 pt-10 pb-10 lg:pt-14 lg:pb-12 items-center">
