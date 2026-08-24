@@ -53,16 +53,16 @@ export default function ContactPage() {
               <div className="text-xs text-zinc-600 mt-2">Mon–Sat 8AM–5PM · Smart / TNT</div>
             </div>
 
-            <a href="mailto:sancolandsurveying@gmail.com" className="group rounded-2xl border border-zinc-200 p-4 bg-zinc-50/70 hover:bg-white hover:border-emerald-200 hover:shadow-sm transition text-left">
+            <a href="mailto:sancolandsurveyingservices@gmail.com" className="group rounded-2xl border border-zinc-200 p-4 bg-zinc-50/70 hover:bg-white hover:border-emerald-200 hover:shadow-sm transition text-left">
               <div className="h-9 w-9 rounded-xl bg-[#0a4a3a] text-white grid place-items-center">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" strokeWidth="1.6" fill="none"/><path d="M3.5 6 12 13l8.5-7" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </div>
               <div className="text-xs font-bold tracking-[0.12em] text-zinc-500 mt-3">EMAIL</div>
-              <div className="text-sm font-semibold text-zinc-900 mt-1 break-all leading-tight">sancolandsurveying@gmail.com</div>
+              <div className="text-sm font-semibold text-zinc-900 mt-1 break-all leading-tight">sancolandsurveyingservices@gmail.com</div>
               <div className="text-xs text-emerald-700 font-medium mt-2 inline-flex items-center gap-1 group-hover:gap-1.5 transition-all">Send email <span aria-hidden>→</span></div>
             </a>
 
-            <a href="https://www.facebook.com/search/top/?q=Sanco%20Land%20Surveying%20Services" target="_blank" rel="noopener noreferrer" className="group rounded-2xl border border-zinc-200 p-4 bg-zinc-50/70 hover:bg-white hover:border-emerald-200 hover:shadow-sm transition text-left">
+            <a href="https://www.facebook.com/sancolandsurveying" target="_blank" rel="noopener noreferrer" className="group rounded-2xl border border-zinc-200 p-4 bg-zinc-50/70 hover:bg-white hover:border-emerald-200 hover:shadow-sm transition text-left">
               <div className="h-9 w-9 rounded-xl bg-[#1877F2] text-white grid place-items-center font-black text-lg leading-none">f</div>
               <div className="text-xs font-bold tracking-[0.12em] text-zinc-500 mt-3">FACEBOOK</div>
               <div className="text-sm font-semibold text-zinc-900 mt-1 leading-tight">Sanco Land Surveying Services</div>

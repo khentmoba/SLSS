@@ -22,12 +22,23 @@ const workflow = [
   ["08", "Completed", "Download", "Bank-ready PDFs released to your portal. SMS + email notified."],
 ];
 
+// Property states driven by active step 0..7
+const propStates: { label: string; states: string[] }[] = [
+  { label: "Lot 1234 — Cabadbaran", states: ["Inquiry received", "We verify docs", "We price it", "You confirm", "Field work", "Processing", "Deliverables", "Download ✓"] },
+  { label: "Lot 5678 — Butuan", states: ["—", "—", "—", "You confirm", "Today 9AM", "AutoCAD", "Deliverables", "Download ✓"] },
+  { label: "Lot 9101 — Bayugan", states: ["—", "—", "Quotation sent", "Payment pending", "—", "—", "—", "Completed ✓"] },
+];
+
 export default function Home() {
   const [scrollY, setScrollY] = useState(0);
   const [progress, setProgress] = useState(0);
+  const [scrub, setScrub] = useState(0);
   const heroRef = useRef<HTMLElement>(null);
+  const scrubWrapRef = useRef<HTMLDivElement>(null);
+  const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
+    setReducedMotion(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
     let ticking = false;
     const onScroll = () => {
       if (ticking) return;
@@ -37,6 +48,25 @@ export default function Home() {
         setScrollY(y);
         const h = document.documentElement.scrollHeight - window.innerHeight;
         setProgress(h > 0 ? Math.min(y / h, 1) : 0);
+
+        // scrub: map scrubWrap section scroll to 0..1
+        const el = scrubWrapRef.current;
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          const vh = window.innerHeight;
+          const total = el.offsetHeight - vh + 84; // 84 = sticky top
+          let p = 0;
+          if (total > 0) p = Math.min(1, Math.max(0, -rect.top / total));
+          // on mobile where not sticky, fall back to viewport proximity
+          if (window.innerWidth < 1024) {
+            // map element visibility to 0..1
+            const visibleTop = Math.max(0, vh - rect.top);
+            const denom = rect.height + vh;
+            p = Math.min(1, Math.max(0, visibleTop / denom * 2.2));
+          }
+          setScrub(p);
+        }
+
         ticking = false;
       });
     };
@@ -64,6 +94,7 @@ export default function Home() {
 
   const heroParallax = scrollY * 0.18;
   const heroFade = Math.max(0, 1 - scrollY / 700);
+  const activeStep = reducedMotion ? 7 : Math.min(7, Math.floor(scrub * 8 + 0.0001));
 
   return (
     <div className="relative bg-[#fdfcfb] overflow-clip">
@@ -81,15 +112,15 @@ export default function Home() {
           <path d="M -40 240 C 160 200, 320 270, 520 230 S 720 180, 840 250" fill="none" stroke="#0a4a3a" strokeWidth="0.7" />
           <path d="M -40 300 C 180 260, 340 330, 560 290 S 740 240, 840 310" fill="none" stroke="#0a4a3a" strokeWidth="0.6" />
         </svg>
-              <div className="relative w-full overflow-hidden bg-white border-y border-zinc-200 reveal" style={{ opacity: heroFade } as any}>
-        <picture>
-          <source srcSet="/sanco_landing_logo.webp" type="image/webp" />
-          <img src="/sanco_landing_logo.png" alt="Sanco Land Surveying Services" width={2400} height={975} className="w-full h-auto block" draggable={false} fetchPriority="high" />
-        </picture>
-      </div>
-      <div className="relative max-w-6xl mx-auto px-4">
-          <div className="grid lg:grid-cols-[1.12fr_0.88fr] gap-8 lg:gap-6 pt-10 pb-10 lg:pt-14 lg:pb-12 items-center">
-            <div className="relative">
+        <div className="relative w-full overflow-hidden bg-white border-y border-zinc-200 reveal" style={{ opacity: heroFade } as any}>
+          <picture>
+            <source srcSet="/sanco_landing_logo.webp" type="image/webp" />
+            <img src="/sanco_landing_logo.png" alt="Sanco Land Surveying Services" width={2400} height={975} className="w-full h-auto block" draggable={false} fetchPriority="high" />
+          </picture>
+        </div>
+        <div className="relative max-w-6xl mx-auto px-4">
+          <div className="grid lg:grid-cols-[1.12fr_0.88fr] gap-8 lg:gap-6 pt-10 pb-10 lg:pt-14 lg:pb-12 items-start">
+            <div className="relative lg:sticky lg:top-[84px]">
               <div className="reveal" style={{ opacity: heroFade, transform: `translateY(${scrollY * 0.06}px)` } as any}>
                 <div className="inline-flex items-center gap-2 text-[11px] tracking-[0.14em] font-bold text-emerald-900 bg-white border border-emerald-200/70 px-3.5 py-1.5 rounded-full shadow-sm">
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-600 animate-pulse" />
@@ -113,72 +144,188 @@ export default function Home() {
                   Track my project
                 </Link>
                 <Link href="/contact" className="inline-flex items-center justify-center px-5 py-3 rounded-full text-sm font-medium text-zinc-600 hover:text-zinc-900 hover:bg-white border border-transparent hover:border-zinc-200 transition">
-                  Talk to a GE
+                  Talk to SLSS
                 </Link>
               </div>
-            </div>
-            <div className="relative lg:pl-2">
-              <div className="relative rounded-[28px] bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-800 p-5 sm:p-6 shadow-[0_20px_60px_rgba(10,74,58,0.25)] border border-emerald-900/20 overflow-hidden parallax-slow" style={{ transform: `translateY(${scrollY * -0.04}px)` }}>
-                <div className="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-white/10 blur-2xl" aria-hidden />
-                <div className="absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-teal-300/10 blur-2xl" aria-hidden />
-                <div className="relative rounded-2xl bg-white shadow-xl border border-white/60 p-5 animate-float" style={{ transform: `translateY(${scrollY * 0.02}px)` } as any}>
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <div className="text-[11px] tracking-[0.14em] font-bold text-emerald-800">8-STEP WORKFLOW</div>
-                      <div className="text-xs text-zinc-600 mt-1 leading-snug">No more “Unsa na status sa akong survey?” — every move is logged.</div>
-                    </div>
-                    <span className="shrink-0 h-9 w-9 rounded-xl bg-emerald-800 text-white grid place-items-center text-sm">◈</span>
-                  </div>
-                  <ol className="mt-4 grid grid-cols-2 gap-2.5">
-                    {[
-                      ["1", "Client Request", "Inquiry received"],
-                      ["2", "Document Check", "We verify docs"],
-                      ["3", "Quotation", "We price it"],
-                      ["4", "Payment", "You confirm"],
-                      ["5", "Site Survey", "Field work"],
-                      ["6", "Processing", "AutoCAD"],
-                      ["7", "Documentation", "Deliverables"],
-                      ["8", "Completed", "Download"],
-                    ].map(([n, t, d]) => (
-                      <li key={n} className="flex gap-2.5 rounded-xl bg-zinc-50 border border-zinc-200 px-3 py-2.5 hover:bg-white hover:border-emerald-200 hover:shadow-sm transition">
-                        <span className="h-7 w-7 rounded-full bg-emerald-800 text-white grid place-items-center text-xs font-bold shrink-0">{n}</span>
-                        <span className="min-w-0"><span className="block font-semibold text-xs leading-none text-zinc-900">{t}</span><span className="block text-[11px] leading-tight text-zinc-600 mt-0.5">{d}</span></span>
-                      </li>
-                    ))}
-                  </ol>
-                  <div className="mt-3 flex items-center gap-2 text-[11px] text-emerald-700 font-medium">
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" /> Live tracker · SMS + email on every transition
-                  </div>
-                </div>
-                <div className="relative mt-4 rounded-2xl bg-white/95 backdrop-blur border border-white/60 p-4 shadow-lg" style={{ transform: `translateY(${scrollY * 0.035}px)` } as any}>
-                  <div className="flex items-center justify-between">
-                    <div className="text-[11px] font-bold tracking-[0.12em] text-zinc-500">MY PROPERTIES — LIVE PREVIEW</div>
-                    <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-1 rounded-full">3 active</span>
-                  </div>
-                  <div className="mt-3 space-y-2">
-                    {[
-                      { label: "Lot 1234 — Cabadbaran", state: "Processing", tone: "bg-amber-50 border-amber-200 text-amber-800" },
-                      { label: "Lot 5678 — Butuan", state: "Site Survey · Today 9AM", tone: "bg-emerald-50 border-emerald-200 text-emerald-800" },
-                      { label: "Lot 9101 — Bayugan", state: "Quotation sent", tone: "bg-zinc-50 border-zinc-200 text-zinc-700" },
-                    ].map((r) => (
-                      <div key={r.label} className="flex items-center justify-between gap-3 rounded-xl border border-zinc-200 bg-white px-3 py-2.5 hover:border-emerald-200 transition">
-                        <span className="text-sm font-medium truncate text-zinc-900">{r.label}</span>
-                        <span className={`shrink-0 rounded-full border px-2.5 py-1 text-[11px] font-semibold ${r.tone}`}>{r.state}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="mt-3 text-xs text-zinc-600">One phone number owns many parcels — each with its own timeline and documents.</div>
-                </div>
+
+              {/* Desktop hint that the card on the right is scrubbed by scroll */}
+              <div className="reveal reveal-delay-2 hidden lg:flex mt-6 items-center gap-2 text-[11px] tracking-[0.14em] font-bold text-zinc-500">
+                <span className="h-6 w-px bg-zinc-300" />
+                <span>SCROLL TO PLAY THE WORKFLOW</span>
+                <span className="h-5 w-5 rounded-full border border-zinc-300 grid place-items-center animate-bounce">↓</span>
               </div>
-              <div className="hidden lg:flex absolute -left-6 bottom-6 items-center gap-3 rounded-2xl bg-white border border-zinc-200 shadow-xl px-4 py-3 parallax-slow" style={{ transform: `translateY(${scrollY * -0.07}px)` }}>
-                <img src="/slss_logo.jpg" alt="" width={36} height={36} className="h-9 w-9 rounded-xl object-cover border border-zinc-200" />
-                <div><div className="text-xs font-bold tracking-tight text-zinc-900 leading-none">Licensed GE</div><div className="text-xs text-zinc-600 leading-none mt-1">PRC · DENR accredited</div></div>
-                <span className="ml-2 h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+            </div>
+
+            {/* RIGHT: Scroll-driven workflow — pins while you scroll */}
+            <div
+              ref={scrubWrapRef}
+              className="relative lg:pl-2 lg:h-[240vh]"
+              style={reducedMotion ? { height: "auto" } : undefined}
+            >
+              <div className={reducedMotion ? "relative" : "relative lg:sticky lg:top-[84px]"}>
+                <div className="relative rounded-[28px] bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-800 p-5 sm:p-6 shadow-[0_20px_60px_rgba(10,74,58,0.25)] border border-emerald-900/20 overflow-hidden">
+                  <div className="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-white/10 blur-2xl" aria-hidden />
+                  <div className="absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-teal-300/10 blur-2xl" aria-hidden />
+
+                  {/* Progress dots + mobile rail - driven by scrub */}
+                  <div className="absolute top-5 right-5 hidden sm:flex items-center gap-1.5">
+                    {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
+                      <span
+                        key={i}
+                        className={`h-1.5 rounded-full transition-all duration-300 ${i === activeStep ? "w-6 bg-white shadow" : i < activeStep ? "w-1.5 bg-white/70" : "w-1.5 bg-white/25"}`}
+                        aria-hidden
+                      />
+                    ))}
+                  </div>
+
+                  <div className="relative rounded-2xl bg-white shadow-xl border border-white/60 p-5">
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <div className="text-[11px] tracking-[0.14em] font-bold text-emerald-800 flex items-center gap-2">
+                          8-STEP WORKFLOW
+                          {!reducedMotion && (
+                            <span className="inline-flex items-center gap-1 text-[10px] tracking-normal font-bold px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700">
+                              <span className="h-1.5 w-1.5 rounded-full bg-emerald-600 animate-pulse" /> LIVE
+                            </span>
+                          )}
+                        </div>
+                        <div className="text-xs text-zinc-600 mt-1 leading-snug">No more “Unsa na status sa akong survey?” — every move is logged.</div>
+                      </div>
+                      <span
+                        className="shrink-0 h-9 w-9 rounded-xl bg-emerald-800 text-white grid place-items-center text-sm border border-emerald-700 shadow-sm"
+                        style={!reducedMotion ? { transform: `rotate(${scrub * 360}deg)`, transition: "transform 0.1s linear" } : undefined}
+                      >
+                        ◈
+                      </span>
+                    </div>
+
+                    {/* 8-step grid — each step lights as scrub advances */}
+                    <ol className="mt-4 grid grid-cols-2 gap-2.5">
+                      {[
+                        ["1", "Client Request", "Inquiry received"],
+                        ["2", "Document Check", "We verify docs"],
+                        ["3", "Quotation", "We price it"],
+                        ["4", "Payment", "You confirm"],
+                        ["5", "Site Survey", "Field work"],
+                        ["6", "Processing", "AutoCAD"],
+                        ["7", "Documentation", "Deliverables"],
+                        ["8", "Completed", "Download"],
+                      ].map(([n, t, d], i) => {
+                        const isActive = i === activeStep;
+                        const isPast = i < activeStep;
+                        return (
+                          <li
+                            key={n}
+                            className={`flex gap-2.5 rounded-xl border px-3 py-2.5 transition-all duration-500 ${
+                              isActive
+                                ? "bg-white border-emerald-300 shadow-[0_8px_20px_rgba(10,74,58,0.12)] scale-[1.02] -translate-y-0.5"
+                                : isPast
+                                  ? "bg-white border-zinc-200 opacity-80"
+                                  : "bg-zinc-50 border-zinc-200 opacity-60"
+                            }`}
+                            style={!reducedMotion ? { transitionDelay: `${Math.abs(i - activeStep) * 10}ms` } : undefined}
+                          >
+                            <span
+                              className={`h-7 w-7 rounded-full grid place-items-center text-xs font-bold shrink-0 border transition-all duration-500 ${
+                                isActive
+                                  ? "bg-emerald-800 text-white border-emerald-800 scale-110 shadow-sm"
+                                  : isPast
+                                    ? "bg-emerald-50 text-emerald-800 border-emerald-200"
+                                    : "bg-white text-zinc-500 border-zinc-200"
+                              }`}
+                            >
+                              {isPast && !isActive ? "✓" : n}
+                            </span>
+                            <span className="min-w-0">
+                              <span className={`block font-semibold text-xs leading-none ${isActive ? "text-emerald-900" : "text-zinc-900"}`}>{t}</span>
+                              <span className={`block text-[11px] leading-tight mt-0.5 ${isActive ? "text-emerald-700 font-medium" : "text-zinc-600"}`}>{d}</span>
+                            </span>
+                          </li>
+                        );
+                      })}
+                    </ol>
+
+                    <div className="mt-3 flex items-center gap-2 text-[11px] font-medium">
+                      <span className={`h-1.5 w-1.5 rounded-full ${activeStep === 7 ? "bg-emerald-600 animate-pulse" : "bg-emerald-600"}`} />
+                      <span className={activeStep === 7 ? "text-emerald-700 font-bold" : "text-emerald-700"}>
+                        {activeStep === 7 ? "All done — download your bank-ready PDFs ✓" : `Live tracker · SMS + email on every transition — Step ${activeStep + 1} of 8`}
+                      </span>
+                    </div>
+
+                    {/* mobile progress bar */}
+                    <div className="mt-3 h-1.5 rounded-full bg-zinc-100 overflow-hidden lg:hidden">
+                      <div className="h-full bg-emerald-700 origin-left transition-transform duration-100" style={{ transform: `scaleX(${reducedMotion ? 1 : scrub})`, transformOrigin: "left" }} />
+                    </div>
+                  </div>
+
+                  {/* My Properties — states driven by scrub */}
+                  <div
+                    className="relative mt-4 rounded-2xl bg-white/95 backdrop-blur border border-white/60 p-4 shadow-lg"
+                    style={!reducedMotion ? { transform: `translateY(${scrub * 8}px)` } as any : undefined}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="text-[11px] font-bold tracking-[0.12em] text-zinc-500">MY PROPERTIES — LIVE PREVIEW</div>
+                      <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-1 rounded-full">3 active</span>
+                    </div>
+                    <div className="mt-3 space-y-2">
+                      {propStates.map((r, idx) => {
+                        const state = r.states[activeStep] ?? r.states[0];
+                        const isDone = state.includes("✓") || state.includes("Download");
+                        const isActiveLot = activeStep >= 3 && idx === 0;
+                        // color by index + state
+                        const tone =
+                          isDone
+                            ? "bg-emerald-50 border-emerald-200 text-emerald-800"
+                            : state === "—"
+                              ? "bg-zinc-50 border-zinc-200 text-zinc-400"
+                              : activeStep >= 4
+                                ? "bg-amber-50 border-amber-200 text-amber-800"
+                                : "bg-sky-50 border-sky-200 text-sky-800";
+                        return (
+                          <div
+                            key={r.label}
+                            className={`flex items-center justify-between gap-3 rounded-xl border bg-white px-3 py-2.5 transition-all duration-500 ${isActiveLot ? "border-emerald-200 shadow-sm" : "border-zinc-200"} ${state === "—" ? "opacity-60" : "opacity-100"}`}
+                            style={!reducedMotion ? { transform: `translateX(${isActiveLot ? 2 : 0}px)` } : undefined}
+                          >
+                            <span className="text-sm font-medium truncate text-zinc-900">{r.label}</span>
+                            <span className={`shrink-0 rounded-full border px-2.5 py-1 text-[11px] font-semibold transition-all duration-300 ${tone}`}>{state}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <div className="mt-3 text-xs text-zinc-600">One phone number owns many parcels — each with its own timeline and documents.</div>
+                    <div className="mt-2 h-1 rounded-full bg-zinc-100 overflow-hidden">
+                      <div className="h-full bg-emerald-700 origin-left transition-transform duration-100" style={{ transform: `scaleX(${reducedMotion ? 1 : 0.12 + scrub * 0.88})`, transformOrigin: "left" }} />
+                    </div>
+                  </div>
+
+                  {/* scroll hint inside green stage */}
+                  {!reducedMotion && scrub < 0.92 && (
+                    <div className="hidden lg:flex absolute bottom-3 left-1/2 -translate-x-1/2 items-center gap-1.5 text-[11px] tracking-[0.12em] font-bold text-white/80 bg-white/10 backdrop-blur border border-white/15 px-3 py-1.5 rounded-full pointer-events-none">
+                      SCROLL <span className="animate-bounce">↓</span> TO PLAY
+                    </div>
+                  )}
+                </div>
+
+                {/* Licensed GE badge — parallax with scrub */}
+                <div
+                  className="hidden lg:flex absolute -left-6 -bottom-4 items-center gap-3 rounded-2xl bg-white border border-zinc-200 shadow-xl px-4 py-3"
+                  style={!reducedMotion ? { transform: `translateY(${scrub * -10}px) translateX(${scrub * 6}px)`, transition: "transform 0.1s linear" } : undefined}
+                >
+                  <img src="/slss_logo.jpg" alt="" width={36} height={36} className="h-9 w-9 rounded-xl object-cover border border-zinc-200" />
+                  <div>
+                    <div className="text-xs font-bold tracking-tight text-zinc-900 leading-none">Licensed GE</div>
+                    <div className="text-xs text-zinc-600 leading-none mt-1">PRC · DENR accredited</div>
+                  </div>
+                  <span className="ml-2 h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                </div>
               </div>
             </div>
           </div>
-          <div className="hidden lg:flex items-center justify-center gap-2 pb-4 text-[11px] tracking-[0.14em] font-semibold text-zinc-500" style={{ opacity: heroFade } as any}>
-            <span>SCROLL TO EXPLORE</span><span className="h-6 w-px bg-zinc-300" /><span className="h-5 w-5 rounded-full border border-zinc-300 grid place-items-center animate-bounce">↓</span>
+          <div className="hidden lg:flex items-center justify-center gap-2 pb-4 text-[11px] tracking-[0.14em] font-semibold text-zinc-500 pt-6" style={{ opacity: heroFade } as any}>
+            <span>SCROLL TO EXPLORE</span>
+            <span className="h-6 w-px bg-zinc-300" />
+            <span className="h-5 w-5 rounded-full border border-zinc-300 grid place-items-center animate-bounce">↓</span>
           </div>
         </div>
       </section>
@@ -361,16 +508,16 @@ export default function Home() {
           <div className="reveal mt-6 rounded-2xl bg-white/10 backdrop-blur border border-white/15 p-4">
             <div className="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between text-sm">
               <div className="flex flex-wrap gap-4 text-white/90">
-                <a href="tel:+639972868269" className="inline-flex items-center gap-2 hover:text-white font-medium">
+                <a href="tel:+639****8269" className="inline-flex items-center gap-2 hover:text-white font-medium">
                   <span className="h-7 w-7 rounded-full bg-white text-zinc-900 grid place-items-center text-xs">☎</span>
                   0997 286 8269 · 0907 010 4143
                 </a>
-                <a href="mailto:sancolandsurveying@gmail.com" className="inline-flex items-center gap-2 hover:text-white">
+                <a href="mailto:sancolandsurveyingservices@gmail.com" className="inline-flex items-center gap-2 hover:text-white">
                   <span className="h-7 w-7 rounded-full bg-white text-zinc-900 grid place-items-center text-[11px]">✉</span>
-                  sancolandsurveying@gmail.com
+                  sancolandsurveyingservices@gmail.com
                 </a>
               </div>
-              <a href="https://www.facebook.com/search/top/?q=Sanco%20Land%20Surveying%20Services" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-white/90 hover:text-white text-xs font-medium">
+              <a href="https://www.facebook.com/sancolandsurveying" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-white/90 hover:text-white text-xs font-medium">
                 <span className="h-7 w-7 rounded-full bg-[#1877F2] text-white grid place-items-center font-black text-sm leading-none">f</span>
                 Sanco Land Surveying Services
               </a>
@@ -420,12 +567,5 @@ export default function Home() {
     </div>
   );
 }
-
-
-
-
-
-
-
 
 

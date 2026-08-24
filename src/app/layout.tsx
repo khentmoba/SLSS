@@ -49,15 +49,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   </span>
                 </div>
                 {/* Email */}
-                <a href="mailto:sancolandsurveying@gmail.com" className="flex items-center gap-3 px-0 lg:px-5 py-2 lg:py-1 hover:bg-white/5 rounded-xl lg:rounded-none transition group">
+                <a href="mailto:sancolandsurveyingservices@gmail.com" className="flex items-center gap-3 px-0 lg:px-5 py-2 lg:py-1 hover:bg-white/5 rounded-xl lg:rounded-none transition group">
                   <span className="h-9 w-9 shrink-0 rounded-full bg-white text-[#0a4a3a] grid place-items-center shadow-sm group-hover:scale-105 transition">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" strokeWidth="1.6" fill="none"/><path d="M3.5 6 12 13l8.5-7" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/><path d="M6 14.5 9.2 11M18 14.5 14.8 11" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>
                   </span>
-                  <span className="text-sm font-medium break-all leading-tight group-hover:underline underline-offset-2">sancolandsurveying@gmail.com</span>
+                  <span className="text-sm font-medium break-all leading-tight group-hover:underline underline-offset-2">sancolandsurveyingservices@gmail.com</span>
                 </a>
                 {/* Facebook */}
-                <a href="https://www.facebook.com/search/top/?q=Sanco%20Land%20Surveying%20Services" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 px-0 lg:px-5 py-2 lg:py-1 hover:bg-white/5 rounded-xl lg:rounded-none transition group">
-                  <span className="h-9 w-9 shrink-0 rounded-full bg-white text-[#0a4a3a] grid place-items-center shadow-sm group-hover:scale-105 transition font-black text-[18px] leading-none">f</span>
+                <a href="https://www.facebook.com/sancolandsurveying" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 px-0 lg:px-5 py-2 lg:py-1 hover:bg-white/5 rounded-xl lg:rounded-none transition group">
+                  <span className="h-9 w-9 shrink-0 rounded-full bg-[#1877F2] text-white grid place-items-center shadow-sm group-hover:scale-105 transition font-black text-[18px] leading-none">f</span>
                   <span className="text-sm leading-tight">
                     <span className="block font-semibold group-hover:underline underline-offset-2">Sanco Land Surveying Services</span>
                     <span className="block text-white/70 text-xs">Follow us on Facebook</span>

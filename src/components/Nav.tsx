@@ -31,7 +31,6 @@ export function Nav() {
               <div className="text-xs tracking-[0.12em] font-semibold text-emerald-700 -mt-0.5">LAND SURVEYING</div>
             </div>
             <span className="hidden lg:inline-flex ml-2 text-xs tracking-[0.08em] font-semibold text-zinc-600 border-l pl-3">Your Property. Our Precision.</span>
-            <span className="hidden xl:inline-flex items-center ml-2 text-[10px] font-bold tracking-widest bg-emerald-50 border border-emerald-200 text-emerald-800 px-2 py-0.5 rounded-full">EST. 2018</span>
           </Link>
 
           <nav aria-label="Primary" className="hidden md:flex items-center gap-1">
