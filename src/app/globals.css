@@ -1,47 +1,109 @@
 @import "tailwindcss";
 
+/*
+  SANCO — "Field Note" design system
+  Survey-cartography identity: bond-paper field notes, drafting rules,
+  monument marks. Built to kill the generic emerald-SaaS / Geist look.
+*/
 :root {
-  --background: #fdfcfb;
-  --foreground: #18181b;
-  --paper: #fdfcfb;
-  --ink: #0f1412;
-  --stone: #f6f4f1;
-  --rule: #e7e5e4;
-  --sanco: #0a4a3a;
-  --sanco-mid: #0f6b52;
-  --sanco-soft: #e6f4ef;
-  --sanco-dark: #0f3d2e;
-  --sanco-light: #ecfdf5;
-  --radius: 16px;
+  --background: #f4efe1;
+  --foreground: #17170f;
+  --paper: #f4efe1;
+  --paper-card: #fcfaf1;
+  --ink: #17170f;
+  --stone: #eee7d3;
+  --rule: #dcd3b8;
+  --pine: #1d3820;
+  --pine-ink: #122414;
+  --flag: #dd5a24;
+  --flag-deep: #b24414;
+  --brass: #9b7b2f;
+  --radius: 10px;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --color-sanco: var(--sanco);
-  --color-sanco-dark: var(--sanco-dark);
+  --color-paper: var(--paper);
+  --color-paper-card: var(--paper-card);
+  --color-ink: var(--ink);
+  --color-line: var(--rule);
+  --color-flag: var(--flag);
+  --color-flag-deep: var(--flag-deep);
+  --color-brass: var(--brass);
+  --color-sanco: var(--pine);
+  --color-sanco-dark: var(--pine-ink);
+
+  --font-sans: var(--font-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-mono: var(--font-plex), ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* bond-paper neutrals — replaces the cool "zinc" grays site-wide */
+  --color-zinc-50: #f8f5ec;
+  --color-zinc-100: #f0ebdd;
+  --color-zinc-200: #e2dac4;
+  --color-zinc-300: #c9bfa3;
+  --color-zinc-400: #a79c7d;
+  --color-zinc-500: #837858;
+  --color-zinc-600: #645b41;
+  --color-zinc-700: #4a4230;
+  --color-zinc-800: #332d1e;
+  --color-zinc-900: #1f1c12;
+  --color-zinc-950: #161309;
+
+  /* pine green — replaces the saturated "emerald" site-wide */
+  --color-emerald-50: #eef3e9;
+  --color-emerald-100: #dbe5d4;
+  --color-emerald-200: #b9caae;
+  --color-emerald-300: #92aa84;
+  --color-emerald-400: #68875c;
+  --color-emerald-500: #49693f;
+  --color-emerald-600: #355530;
+  --color-emerald-700: #294626;
+  --color-emerald-800: #1d3820;
+  --color-emerald-900: #16301a;
+  --color-emerald-950: #0c1a0e;
+
+  /* warm ambers used for notice states */
+  --color-amber-50: #fbf3df;
+  --color-amber-100: #f5e5c0;
+  --color-amber-200: #ebd094;
+  --color-amber-300: #ddb766;
+  --color-amber-500: #c08a2d;
+  --color-amber-600: #a9731f;
+  --color-amber-700: #8a5c18;
+  --color-amber-800: #714814;
+  --color-amber-900: #5a3a11;
 }
 
-* { scrollbar-width: thin; scrollbar-color: #a1a1aa transparent; }
-*::-webkit-scrollbar { width: 6px; height: 6px; }
-*::-webkit-scrollbar-thumb { background: #a1a1aa; border-radius: 999px; }
+* { scrollbar-width: thin; scrollbar-color: #b4a985 transparent; }
+*::-webkit-scrollbar { width: 8px; height: 8px; }
+*::-webkit-scrollbar-thumb { background: #b4a985; border: 2px solid var(--paper); border-radius: 0; }
 *::-webkit-scrollbar-track { background: transparent; }
 
 html { scroll-behavior: smooth; }
 body {
   background: var(--paper);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  font-family: var(--font-grotesk), ui-sans-serif, system-ui, sans-serif;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
 
-.skip-link { position: absolute; inset-inline-start: -999px; top: 12px; z-index: 100; background: var(--sanco); color: white; padding: 10px 16px; border-radius: 999px; font-size: 14px; font-weight: 600; }
+/* Interactive controls get a real pointer everywhere (no lazy default cursors) */
+a, button, [role="button"], summary, label, select { cursor: pointer; }
+input[type="text"], input[type="email"], input[type="number"], input[type="date"],
+input[type="tel"], input[type="search"], input[type="password"], textarea { cursor: text; }
+
+::selection { background: #e0a55f; color: #17170f; }
+
+/* Headings default to the editorial display face; utilities can still override */
+h1, h2, h3 { font-family: var(--font-fraunces), Georgia, serif; font-weight: 800; letter-spacing: -0.015em; }
+
+.skip-link { position: absolute; inset-inline-start: -999px; top: 12px; z-index: 100; background: var(--pine-ink); color: #fff; padding: 10px 16px; font-size: 14px; font-weight: 600; font-family: var(--font-grotesk); }
 .skip-link:focus { inset-inline-start: 16px; }
 
-:focus-visible { outline: 2px solid #0a4a3a; outline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--pine); outline-offset: 2px; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -51,31 +113,74 @@ body {
 
 @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
-.animate-fadeIn { animation: fadeIn 0.32s cubic-bezier(0.16, 1, 0.3, 1); }
+.animate-fadeIn { animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
 
-.card { box-shadow: 0 1px 2px rgba(16, 24, 20, 0.06), 0 8px 24px rgba(16, 24, 20, 0.05); }
+/* Drafting-plate card: crisp 1px ruling + a hard offset "plate" shadow */
+.card {
+  border: 1px solid var(--rule);
+  background: var(--paper-card);
+  box-shadow: 4px 4px 0 rgba(31, 28, 18, 0.06);
+}
+
+/* Mono micro-label — coordinates, indexes, kickers */
+.rule-label {
+  font-family: var(--font-plex), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
 
 .scrollbar-none::-webkit-scrollbar { display: none; }
 .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
 
 .rule { border-color: var(--rule); }
+
 /* scroll reveal */
-.reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.72s cubic-bezier(0.16,1,0.3,1), transform 0.72s cubic-bezier(0.16,1,0.3,1); will-change: opacity, transform; }
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1); will-change: opacity, transform; }
 .reveal.in { opacity: 1; transform: none; }
 .reveal-delay-1 { transition-delay: 80ms; }
 .reveal-delay-2 { transition-delay: 150ms; }
 .reveal-delay-3 { transition-delay: 220ms; }
 .reveal-delay-4 { transition-delay: 300ms; }
 .reveal-delay-5 { transition-delay: 380ms; }
-@keyframes floatY { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-6px) } }
-.animate-float { animation: floatY 6s ease-in-out infinite; }
+
+/* Fine drafting grid — replaces the dotted "topo" pattern as a background */
+.draft-grid {
+  background-image:
+    linear-gradient(var(--rule) 1px, transparent 1px),
+    linear-gradient(90deg, var(--rule) 1px, transparent 1px),
+    linear-gradient(rgba(29, 56, 32, 0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(29, 56, 32, 0.09) 1px, transparent 1px);
+  background-size: 60px 60px, 60px 60px, 12px 12px, 12px 12px;
+}
+/* legacy alias kept for any existing usage */
 .topo-grid {
   background-image:
-    radial-gradient(circle at 1px 1px, rgba(10,74,58,0.08) 1px, transparent 0),
-    linear-gradient(rgba(10,74,58,0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(10,74,58,0.035) 1px, transparent 1px);
+    radial-gradient(circle at 1px 1px, rgba(29,56,32,0.10) 1px, transparent 0),
+    linear-gradient(rgba(29,56,32,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(29,56,32,0.05) 1px, transparent 1px);
   background-size: 22px 22px, 44px 44px, 44px 44px;
   background-position: -1px -1px, 0 0, 0 0;
 }
+
+/* Survey monument crosshair mark */
+.monument {
+  position: relative;
+}
+.monument::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  background:
+    linear-gradient(var(--pine) 0 0) center/100% 1px no-repeat,
+    linear-gradient(var(--pine) 0 0) center/1px 100% no-repeat;
+  opacity: 0.16;
+  pointer-events: none;
+}
+
 #progress-bar { transform-origin: left; }
 .parallax-slow { will-change: transform; }
+
+/* Dashed boundary top-rule for record cards */
+.record-top { border-top: 2px dashed var(--rule); }

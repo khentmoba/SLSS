@@ -29,37 +29,44 @@ export default function LoginPage() {
   function onCodeInput(v: string, idx: number){
     const chars = v.replace(/\D/g,"").slice(0,6);
     setCode(chars);
-    // auto-focus next
     if(chars.length> idx && idx <5) inputsRef.current[idx+1]?.focus();
   }
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8 grid lg:grid-cols-2 gap-6">
-      <div className="bg-white rounded-[20px] border border-zinc-200 card p-6 md:p-8">
-        <div className="h-10 w-10 rounded-xl bg-emerald-700 text-white grid place-items-center">◉</div>
-        <h1 className="text-xl font-bold tracking-tight mt-3">Verify your phone</h1>
-        <p className="text-sm text-zinc-600 mt-1">Phone is your identity. One client can own many properties. Enter 11-digit PH number (09…). We also auto-create account for walk-in/FB guests when they verify.</p>
+    <div className="max-w-5xl mx-auto px-4 py-8 grid lg:grid-cols-2 gap-6 items-start">
+      <div className="bg-[#fcfaf1] border border-[#dcd3b8] card p-6 md:p-8 relative overflow-hidden">
+        <span aria-hidden className="absolute top-0 left-0 h-[2px] w-full bg-[#1d3820]" />
+        <div className="flex items-center gap-3">
+          <div className="h-10 w-10 border border-[#1d3820] bg-[#1d3820] text-white grid place-items-center">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden><circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.8"/><path d="M4 20c1.5-4 4.5-5.5 8-5.5s6.5 1.5 8 5.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
+          </div>
+          <div>
+            <h1 className="font-display text-2xl font-extrabold tracking-tight text-[#17170f]">Verify your phone</h1>
+            <p className="text-sm text-[#645b41] mt-0.5">Phone is your identity. One client can own many properties.</p>
+          </div>
+        </div>
+        <p className="text-sm text-[#645b41] mt-4">Enter 11-digit PH number (09…). We also auto-create account for walk-in/FB guests when they verify.</p>
 
         <div className="mt-6">
           {step==="phone" && (
             <div className="space-y-4">
               <label className="block">
-                <div className="text-xs font-medium">PH Mobile *</div>
-                <div className="mt-1 flex gap-2">
-                  <span className="inline-flex items-center rounded-xl border bg-zinc-50 px-3 text-sm">🇵🇭 +63</span>
-                  <input value={phone} onChange={e=>setPhone(e.target.value.replace(/\D/g,"").slice(0,11))} placeholder="09171234567" className="flex-1 rounded-xl border border-zinc-200 bg-white px-3.5 py-3 text-[16px] sm:text-sm tracking-widest" />
+                <div className="text-xs font-semibold uppercase tracking-[0.06em] text-[#4a4230]">PH Mobile *</div>
+                <div className="mt-2 flex gap-2">
+                  <span className="inline-flex items-center border border-[#c9bfa3] bg-[#f0ebdd] px-3 font-mono text-xs text-[#4a4230]">PH · +63</span>
+                  <input value={phone} onChange={e=>setPhone(e.target.value.replace(/\D/g,"").slice(0,11))} placeholder="09171234567" className="flex-1 border border-[#c9bfa3] bg-white px-3.5 py-3 text-[16px] sm:text-sm tracking-widest font-mono placeholder:text-[#a79c7d] focus:border-[#1d3820] focus:ring-2 focus:ring-[#1d3820]/15 outline-none" />
                 </div>
-                <div className="text-xs text-zinc-600 mt-1">We’ll send a 6-digit code. 60s cooldown • 3 attempts.</div>
+                <div className="font-mono text-[11px] text-[#837858] mt-1.5">We’ll send a 6-digit code. 60s cooldown • 3 attempts.</div>
               </label>
-              <button onClick={send} disabled={loading || phone.length!==11} className="w-full bg-emerald-700 text-white py-3 rounded-full font-semibold disabled:opacity-40 disabled:cursor-not-allowed">{loading ? "Sending…" : "Send code →"}</button>
-              <div className="text-xs text-center text-zinc-600">Staff? <Link href="/staff" className="underline text-emerald-700">Go to Staff Admin</Link></div>
+              <button onClick={send} disabled={loading || phone.length!==11} className="w-full bg-[#1d3820] text-white py-3 font-bold uppercase tracking-[0.06em] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#16301a]">{loading ? "Sending…" : "Send code →"}</button>
+              <div className="text-xs text-center text-[#645b41]">Staff? <Link href="/staff" className="underline text-[#1d3820] font-semibold">Go to Staff Admin</Link></div>
             </div>
           )}
           {step==="code" && (
             <div className="space-y-4">
-              <div className="text-xs text-zinc-600">Code sent to <b className="text-zinc-900">{phone}</b> <button onClick={()=>setStep("phone")} className="underline ml-2">Change number</button></div>
+              <div className="font-mono text-xs text-[#645b41]">Code sent to <b className="text-[#17170f]">{phone}</b> <button onClick={()=>setStep("phone")} className="underline ml-2 text-[#1d3820]">Change number</button></div>
               <div>
-                <div className="text-xs font-medium">Enter 6-digit code</div>
+                <div className="text-xs font-semibold uppercase tracking-[0.06em] text-[#4a4230]">Enter 6-digit code</div>
                 <div className="mt-2 flex gap-2 justify-between">
                   {Array.from({length:6}).map((_,i)=> (
                     <input
@@ -73,47 +80,50 @@ export default function LoginPage() {
                         onCodeInput(joined, i);
                       }}
                       onKeyDown={e=> { if(e.key==="Backspace" && !code[i] && i>0) inputsRef.current[i-1]?.focus(); }}
-                      className="h-12 w-12 rounded-xl border border-zinc-200 bg-white text-center text-lg font-semibold focus:border-emerald-600 focus:ring-2 focus:ring-emerald-100 outline-none"
+                      className="h-14 w-full max-w-[54px] border border-[#c9bfa3] bg-white text-center text-lg font-mono font-semibold focus:border-[#1d3820] focus:ring-2 focus:ring-[#1d3820]/15 outline-none"
                       inputMode="numeric"
                       maxLength={1}
                     />
                   ))}
                 </div>
-                <div className="mt-2 flex gap-2">
-                  <button onClick={()=> setCode("")} className="text-xs underline">Clear</button>
-                  <span className="text-xs text-zinc-600">Tip: paste “123456” fills all boxes.</span>
+                <div className="mt-2 flex gap-3 font-mono text-[11px] text-[#645b41]">
+                  <button onClick={()=> setCode("")} className="underline">Clear</button>
+                  <span>Tip: paste “123456” fills all boxes.</span>
                 </div>
                 <input type="hidden" value={code} />
               </div>
-              {devCode && <div className="text-xs bg-amber-50 border border-amber-200 p-3 rounded-xl">Demo code: <b className="font-mono text-sm">{devCode}</b> <span className="text-zinc-600">• also in dev.log</span></div>}
-              <button onClick={verify} disabled={code.length!==6 || loading} className="w-full bg-emerald-700 text-white py-3 rounded-full font-semibold disabled:opacity-40 disabled:cursor-not-allowed">{loading ? "Verifying…" : "Verify & claim projects"}</button>
-              <button onClick={send} className="w-full border bg-white py-2.5 rounded-full text-sm">Resend code (60s cooldown)</button>
+              {devCode && <div className="font-mono text-xs bg-[#fbf3df] border border-[#ebd094] p-3">Demo code: <b className="text-sm">{devCode}</b> <span className="text-[#714814]">• also in dev.log</span></div>}
+              <button onClick={verify} disabled={code.length!==6 || loading} className="w-full bg-[#1d3820] text-white py-3 font-bold uppercase tracking-[0.06em] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#16301a]">{loading ? "Verifying…" : "Verify & claim projects"}</button>
+              <button onClick={send} className="w-full border border-[#dcd3b8] bg-white py-2.5 text-sm text-[#1f1c12]">Resend code (60s cooldown)</button>
             </div>
           )}
-          {msg && <div className={`text-sm p-3 rounded-xl border whitespace-pre-wrap ${msg.startsWith("✓") ? "bg-emerald-50 border-emerald-200 text-emerald-800" : "bg-zinc-50 border-zinc-200"}`}>{msg}</div>}
+          {msg && <div className={`text-sm p-3 border whitespace-pre-wrap ${msg.startsWith("✓") ? "bg-[#eef3e9] border-[#b9caae] text-[#1d3820]" : "bg-[#f0ebdd] border-[#dcd3b8] text-[#4a4230]"}`}>{msg}</div>}
         </div>
       </div>
 
       <div className="space-y-4">
-        <div className="bg-emerald-700 text-white rounded-[20px] p-6">
-          <div className="text-sm font-semibold">Why phone = identity?</div>
-          <ul className="mt-3 space-y-2 text-sm text-white/90 list-disc list-inside">
-            <li><b>1 client : N properties</b> — Lot 1234 Cabadbaran, Lot 5678 Butuan …</li>
-            <li>Guest can request quotation without account; phone links it later.</li>
-            <li>Provisionals auto-claimed on first successful OTP.</li>
-            <li>Walk-in / FB Messenger: staff creates with your phone → you claim.</li>
-          </ul>
-          <div className="mt-4 rounded-xl bg-white text-zinc-800 p-3 text-xs border">Future: email + password optional, but phone OTP stays primary for PH clients.</div>
+        <div className="bg-[#16301a] text-white border border-[#0c1a0e] p-6 relative overflow-hidden">
+          <span aria-hidden className="absolute inset-0 draft-grid opacity-[0.05]" />
+          <div className="relative">
+            <div className="rule-label !text-[10px] text-[#dbe5d4]">Why phone = identity?</div>
+            <ul className="mt-3 space-y-2.5 text-sm text-white/90 marker:text-[#dd5a24] list-none">
+              <li className="flex gap-2"><span className="text-[#dd5a24] font-mono">01</span><span><b>1 client : N properties</b> — Lot 1234 Cabadbaran, Lot 5678 Butuan …</span></li>
+              <li className="flex gap-2"><span className="text-[#dd5a24] font-mono">02</span><span>Guest can request quotation without account; phone links it later.</span></li>
+              <li className="flex gap-2"><span className="text-[#dd5a24] font-mono">03</span><span>Provisionals auto-claimed on first successful OTP.</span></li>
+              <li className="flex gap-2"><span className="text-[#dd5a24] font-mono">04</span><span>Walk-in / FB Messenger: staff creates with your phone → you claim.</span></li>
+            </ul>
+            <div className="mt-4 border border-white/20 bg-white text-[#17170f] p-3 font-mono text-xs">Future: email + password optional, but phone OTP stays primary for PH clients.</div>
+          </div>
         </div>
-        <div className="bg-white rounded-[20px] border border-zinc-200 card p-5">
-          <div className="text-sm font-semibold">What you get after verify</div>
-          <ul className="mt-2 text-sm text-zinc-600 space-y-1 list-disc list-inside">
-            <li>My Properties with full history</li>
-            <li>Track My Project — 8-step timeline + notifications</li>
-            <li>Document vault (TCT/OCT, Tax Dec, Valid ID)</li>
-            <li>Quotations & appointments</li>
+        <div className="bg-[#fcfaf1] border border-[#dcd3b8] card p-5">
+          <div className="rule-label !text-[10px] text-[#1d3820]">After verification</div>
+          <ul className="mt-3 text-sm text-[#645b41] space-y-1.5 list-none">
+            <li className="flex gap-2"><span className="text-[#1d3820]" aria-hidden>—</span>My Properties with full history</li>
+            <li className="flex gap-2"><span className="text-[#1d3820]" aria-hidden>—</span>Track My Project — 8-step timeline + notifications</li>
+            <li className="flex gap-2"><span className="text-[#1d3820]" aria-hidden>—</span>Document vault (TCT/OCT, Tax Dec, Valid ID)</li>
+            <li className="flex gap-2"><span className="text-[#1d3820]" aria-hidden>—</span>Quotations &amp; appointments</li>
           </ul>
-          <Link href="/properties" className="mt-4 inline-flex bg-zinc-900 text-white px-4 py-2 rounded-full text-sm font-medium">Go to My Properties →</Link>
+          <Link href="/properties" className="mt-4 inline-flex bg-[#1f1c12] text-white px-4 py-2 text-xs font-bold uppercase tracking-[0.06em]">Go to My Properties →</Link>
         </div>
       </div>
     </div>
